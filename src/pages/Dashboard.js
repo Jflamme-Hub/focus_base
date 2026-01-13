@@ -1,0 +1,161 @@
+import TaskCard from '../components/TaskCard.js';
+import { store } from '../utils/Store.js';
+
+export default class Dashboard {
+    constructor(container) {
+        this.container = container;
+        this.render();
+        this.unsubscribe = store.subscribe(() => this.updateView());
+    }
+
+    render() {
+        const dateOptions = { weekday: 'long', month: 'long', day: 'numeric' };
+        const dateStr = new Date().toLocaleDateString(undefined, dateOptions);
+
+        const hour = new Date().getHours();
+        let greeting = 'Good Morning';
+        if (hour >= 12 && hour < 17) greeting = 'Good Afternoon';
+        if (hour >= 17) greeting = 'Good Evening';
+
+        this.container.innerHTML = `
+            <div class="dashboard-grid">
+                <section class="welcome-section">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <h2>${greeting}! ☀️</h2>
+                            <p class="date-header">${dateStr}</p>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+                            <div class="points-badge" style="background: var(--md-sys-color-tertiary-container); color: var(--md-sys-color-on-tertiary-container); padding: 8px 16px; border-radius: 16px; font-weight: bold; display: flex; align-items: center; gap: 8px;">
+                                <span class="material-symbols-rounded">military_tech</span>
+                                <span id="points-display">0</span> Focus Points
+                            </div>
+                            <button id="add-general-btn" class="btn btn-primary" style="padding: 6px 16px; font-size: 14px;">
+                                <span class="material-symbols-rounded" style="font-size: 18px;">add</span>
+                                New Task
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                         <p style="margin: 0;">You have <strong id="total-count">0</strong> items to focus on today.</p>
+                    </div>
+                </section>
+
+                <div id="fresh-start-container"></div>
+
+                <section class="task-column">
+                    <div class="section-header">
+                        <h3>Up Next</h3>
+                        <span id="urgent-count" class="badge">0</span>
+                    </div>
+                    <div id="urgent-tasks" class="task-list"></div>
+                </section>
+
+                <section class="task-column">
+                    <div class="section-header">
+                        <h3>Later Today</h3>
+                        <span id="later-count" class="badge">0</span>
+                    </div>
+                    <div id="later-tasks" class="task-list"></div>
+                </section>
+            </div>
+        `;
+
+        this.container.querySelector('#add-general-btn').addEventListener('click', () => {
+            window.app.addModal.open();
+        });
+
+        this.updateView();
+    }
+
+    updateView() {
+        // Fresh Start Logic
+        const overdue = store.getOverdueTasks();
+        const freshStartContainer = this.container.querySelector('#fresh-start-container');
+
+        if (overdue.length > 0) {
+            freshStartContainer.innerHTML = `
+                <div class="fresh-start-card">
+                    <div class="fs-header">
+                        <span class="material-symbols-rounded" style="color: var(--md-sys-color-error);">warning</span>
+                        <h3>Missed Tasks (${overdue.length})</h3>
+                    </div>
+                    <div class="fs-list"></div>
+                </div>
+            `;
+            const list = freshStartContainer.querySelector('.fs-list');
+            overdue.forEach(t => {
+                list.appendChild(this.createMissedTaskRow(t));
+            });
+        } else {
+            freshStartContainer.innerHTML = '';
+        }
+
+        const tasks = store.getTasks(t => !t.completed); // Only show pending
+
+        // Simple logic: School work is "Urgent", everything else "Later" for now
+        const urgent = tasks.filter(t => t.type === 'school');
+        const later = tasks.filter(t => t.type !== 'school');
+
+        // Update Counts
+        const totalEl = this.container.querySelector('#total-count');
+        if (totalEl) totalEl.textContent = tasks.length;
+
+        const urgentBadge = this.container.querySelector('#urgent-count');
+        if (urgentBadge) urgentBadge.textContent = urgent.length;
+
+        const laterBadge = this.container.querySelector('#later-count');
+        if (laterBadge) laterBadge.textContent = later.length;
+
+        const pointsEl = this.container.querySelector('#points-display');
+        if (pointsEl) pointsEl.textContent = store.state.points || 0;
+
+        // Render Lists
+        const urgentContainer = this.container.querySelector('#urgent-tasks');
+        const laterContainer = this.container.querySelector('#later-tasks');
+
+        if (urgentContainer) {
+            urgentContainer.innerHTML = '';
+            urgent.forEach(t => urgentContainer.appendChild(new TaskCard(t).element));
+        }
+
+        if (laterContainer) {
+            laterContainer.innerHTML = '';
+            later.forEach(t => laterContainer.appendChild(new TaskCard(t).element));
+        }
+    }
+
+    createMissedTaskRow(task) {
+        const div = document.createElement('div');
+        div.className = 'fs-item';
+        div.innerHTML = `
+            <span class="fs-title">${task.title}</span>
+            <div class="fs-actions">
+                <button class="btn-micro action-done" title="I did this">Did it</button>
+                <button class="btn-micro action-today" title="Do Today">Do Today</button>
+                <button class="btn-micro action-skip" title="Skip / Backlog">Skip</button>
+            </div>
+        `;
+
+        div.querySelector('.action-done').addEventListener('click', () => {
+            store.toggleTask(task.id); // Completes it
+        });
+
+        div.querySelector('.action-today').addEventListener('click', () => {
+            const today = new Date();
+            const timeStr = today.toISOString().split('T')[0]; // YYYY-MM-DD
+            store.updateTask({ id: task.id, time: timeStr });
+        });
+
+        div.querySelector('.action-skip').addEventListener('click', () => {
+            store.updateTask({ id: task.id, time: 'No Due Date' });
+        });
+
+        return div;
+    }
+
+    destroy() {
+        this.unsubscribe();
+    }
+}

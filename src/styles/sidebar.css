@@ -1,0 +1,52 @@
+#sidebar .nav-item {
+    width: 100%;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    /* Center icon when collapsed (80px width) */
+    cursor: pointer;
+    color: var(--md-sys-color-on-surface-variant);
+    margin-bottom: 4px;
+    border-radius: 0 24px 24px 0;
+    /* Pill shape on right */
+    transition: background-color 0.2s, color 0.2s;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* Specific styling to center icon when collapsed */
+#sidebar .nav-item .material-symbols-rounded {
+    min-width: 48px;
+    /* Fixed width for icon container */
+    text-align: center;
+    margin-right: 12px;
+}
+
+#sidebar .nav-label {
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+    /* Prevent selection issues */
+}
+
+/* Hover effect on sidebar expands it (handled in main.css via width) */
+#sidebar:hover .nav-label {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#sidebar .nav-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+#sidebar .nav-item.active {
+    background-color: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+}
+
+#sidebar .nav-item.active .material-symbols-rounded {
+    font-variation-settings: 'FILL' 1;
+}

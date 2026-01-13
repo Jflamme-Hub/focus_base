@@ -1,0 +1,95 @@
+/* Page Headers */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.page-header h2 {
+    font-size: var(--text-headline-medium);
+}
+
+/* House Work Gamification */
+.points-display {
+    background-color: var(--md-sys-color-tertiary-container);
+    color: var(--md-sys-color-on-tertiary-container);
+    padding: 8px 16px;
+    border-radius: 100px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.gamification-banner {
+    background-color: var(--md-sys-color-surface-variant);
+    padding: var(--spacing-md);
+    border-radius: 16px;
+    margin-bottom: var(--spacing-lg);
+}
+
+.progress-bar {
+    height: 8px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--md-sys-color-tertiary);
+    border-radius: 4px;
+}
+
+/* Calendar Grid */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+.weekday {
+    text-align: center;
+    font-weight: 500;
+    color: var(--md-sys-color-secondary);
+    padding: 8px;
+}
+
+.day {
+    aspect-ratio: 1;
+    background-color: var(--md-sys-color-surface);
+    border: 1px solid var(--md-sys-color-outline);
+    border-radius: 8px;
+    padding: 8px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.day:hover {
+    background-color: var(--md-sys-color-surface-variant);
+}
+
+.day.empty {
+    background-color: transparent;
+    border: none;
+    cursor: default;
+}
+
+.day.has-event {
+    border-color: var(--md-sys-color-primary);
+    background-color: var(--md-sys-color-primary-container);
+}
+
+.event-dot {
+    width: 6px;
+    height: 6px;
+    background-color: var(--md-sys-color-primary);
+    border-radius: 50%;
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+}

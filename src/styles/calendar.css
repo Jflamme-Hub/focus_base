@@ -1,0 +1,49 @@
+.day-events {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 4px;
+    overflow: hidden;
+    max-height: 80px;
+    /* Prevent huge cells */
+}
+
+.calendar-task {
+    font-size: 10px;
+    padding: 2px 4px;
+    border-radius: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: white;
+}
+
+.calendar-task.type-school {
+    background-color: var(--md-sys-color-primary);
+}
+
+.calendar-task.type-house {
+    background-color: var(--md-sys-color-tertiary);
+}
+
+.calendar-task.type-appointment {
+    background-color: var(--md-sys-color-error);
+}
+
+.calendar-task.type-work {
+    background-color: #FD7F2C;
+}
+
+.calendar-task.type-holiday {
+    background-color: transparent;
+    color: var(--md-sys-color-primary);
+    border: 1px solid var(--md-sys-color-outline);
+    font-weight: bold;
+}
+
+/* New style for completed tasks */
+.calendar-task.completed {
+    opacity: 0.6;
+    text-decoration: line-through;
+    filter: grayscale(0.5);
+}

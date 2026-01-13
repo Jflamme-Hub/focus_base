@@ -1,0 +1,145 @@
+/* Dashboard Layout */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.welcome-section {
+    grid-column: 1 / -1;
+    margin-bottom: var(--spacing-md);
+    background: linear-gradient(135deg, var(--md-sys-color-primary), var(--md-sys-color-tertiary));
+    color: white;
+    padding: var(--spacing-xl);
+    border-radius: 24px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#fresh-start-container {
+    grid-column: 1 / -1;
+}
+
+.welcome-section h2 {
+    font-size: var(--text-headline-medium);
+    margin-bottom: var(--spacing-xs);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    color: var(--md-sys-color-on-surface);
+}
+
+.badge {
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Task Card Styling */
+.task-card {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    border-left: 6px solid transparent;
+}
+
+/* Logic for type colors */
+.task-card.type-school {
+    border-left-color: var(--md-sys-color-primary);
+}
+
+.task-card.type-house {
+    border-left-color: var(--md-sys-color-tertiary);
+}
+
+.task-card.type-appointment {
+    border-left-color: var(--md-sys-color-error);
+}
+
+.task-card.type-work {
+    border-left-color: #FD7F2C;
+}
+
+.task-card.type-goal {
+    border-left-color: #00BFA5;
+    /* Teal / Cyan */
+}
+
+/* Orange for Work */
+
+.task-card.type-school .material-symbols-rounded {
+    color: var(--md-sys-color-primary);
+}
+
+.task-card.type-house .material-symbols-rounded {
+    color: var(--md-sys-color-tertiary);
+}
+
+.task-card.type-appointment .material-symbols-rounded {
+    color: var(--md-sys-color-error);
+}
+
+.task-card.type-work .material-symbols-rounded {
+    color: #FD7F2C;
+}
+
+.task-card.type-goal .material-symbols-rounded {
+    color: #00BFA5;
+}
+
+.task-icon-container {
+    background-color: var(--md-sys-color-surface-variant);
+    padding: 12px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.task-content {
+    flex: 1;
+}
+
+.task-title {
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.task-time {
+    font-size: 12px;
+    color: var(--md-sys-color-outline);
+}
+
+.check-btn {
+    color: var(--md-sys-color-primary);
+    background-color: transparent;
+    border: 1px solid var(--md-sys-color-outline);
+}
+
+.check-btn:hover {
+    background-color: var(--md-sys-color-primary-container);
+}
+
+/* Completed State */
+.task-card.completed {
+    opacity: 0.6;
+    background-color: #f0f0f0;
+}
+
+.task-card.completed .task-title {
+    text-decoration: line-through;
+}
+
+.task-card.completed .check-btn {
+    background-color: var(--md-sys-color-primary);
+    color: white;
+}

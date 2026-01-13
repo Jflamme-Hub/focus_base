@@ -1,0 +1,79 @@
+/* Fresh Start Styles */
+.fresh-start-card {
+    background-color: #FFF4F4;
+    border: 1px solid var(--md-sys-color-error-container);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 24px;
+}
+
+.fs-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    color: var(--md-sys-color-error);
+}
+
+.fs-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.fs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.fs-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.fs-title {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.fs-actions {
+    display: flex;
+    gap: 4px;
+}
+
+.btn-micro {
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.action-done {
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+}
+
+.action-today {
+    background-color: var(--md-sys-color-surface-variant);
+    color: var(--md-sys-color-on-surface-variant);
+}
+
+.action-skip {
+    background-color: transparent;
+    color: var(--md-sys-color-outline);
+    border: 1px solid var(--md-sys-color-outline);
+}
+
+.date-header {
+    font-size: 1.2rem;
+    color: var(--md-sys-color-primary);
+    margin: 4px 0 12px 0;
+    font-weight: 500;
+}

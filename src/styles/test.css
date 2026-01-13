@@ -1,0 +1,61 @@
+# ADHD Student Organization App - Task List
+
+- [x] Project Initialization
+    - [x] Create task.md and implementation_plan.md
+    - [x] Create initial project structure (Vite + React -> Vanilla JS/HTML)
+- [x] UI/UX Design & Setup
+    - [x] Setup Vanilla CSS (Material Design)
+    - [x] Create Global Styles (Variables, Typography, Reset)
+    - [x] Design App Layout (Sidebar/Navigation, Main Content Area)
+- [x] Core Features Implementation
+    - [x] Dashboard (Overview of day, quick actions)
+    - [x] School Work Tracker (Assignments, Exams, visual progress)
+    - [x] House Work Tracker (Chores, recurring tasks, gamification elements)
+    - [x] Calendar/Appointments (Weekly/Monthly view, Google Calendar style)
+- [x] Polish & specific ADHD features
+    - [x] Focus Mode / Pomodoro Timer
+    - [x] Visual cues (Color coding, Icons)
+    - [x] "Google App" aesthetic touches (Material Design)
+- [x] Data Persistence & Interaction
+    - [x] **[NEW]** Implement `Store.js` for LocalStorage
+    - [x] **[NEW]** Wire up "Add Task" buttons
+    - [x] Fix index.html loading (CORS issue) via Python server
+- [ ] Notifications & Calendar Polish
+    - [x] **[NEW]** Refactor Time Input to `datetime-local` (for reliable reminders)
+    - [x] **[NEW]** Implement `NotificationManager` (Daily checks + 15m warnings)
+    - [x] **[NEW]** Update Calendar View to show descriptions
+- [x] Task Enhancements
+    - [x] **[NEW]** Add "Location" field for Events
+    - [x] **[NEW]** Add "Notes" field for School/House work
+- [ ] Task Enhancements
+    - [x] **[NEW]** Add "Location" field for Events
+    - [x] **[NEW]** Add "Notes" field for School/House work
+    - [x] **[NEW]** Add "Work" category (Part-time job support)
+    - [x] **[NEW]** Overlap Detection (Warning on conflict)
+    - [x] **[NEW]** Edit Task Functionality (Fix mistakes)
+    - [x] **[NEW]** Gamification: "My Time" Points for all tasks
+- [ ] Missed Tasks / Fresh Start
+    - [x] **[NEW]** Logic to identifying overdue tasks
+    - [x] **[NEW]** "Fresh Start" Section on Dashboard
+    - [x] **[NEW]** Display Today's Date prominently
+    - [x] **[NEW]** Actions: Done (Retroactive), Do Today, Skip
+- [x] Calendar Upgrades
+    - [x] **[NEW]** Implement Month Navigation (Prev/Next)
+    - [x] **[NEW]** Support infinite rolling dates (no hard limits)
+    - [x] **[NEW]** Holiday Support (Display common holidays)
+    - [ ] **[NEW]** "Fresh Start" Section on Dashboard
+    - [ ] **[NEW]** Actions: Done (Retroactive), Do Today, Skip
+- [ ] Calendar Upgrades
+    - [ ] **[NEW]** Implement Month Navigation (Prev/Next)
+    - [ ] **[NEW]** Support infinite rolling dates (no hard limits)
+- [x] Settings & Customization
+    - [x] **[NEW]** Dynamic Greeting (Morning/Afternoon/Evening)
+    - [x] **[NEW]** Settings Page Implementation
+    - [x] **[NEW]** Toggle Categories (Hide School/House/Work)
+    - [x] **[NEW]** Theme Customization (Font, Background Color)
+- [x] **[NEW]** Week in Review / Progress
+    - [x] Store logic for weekly stats
+    - [x] Review Page UI (Stats, Kudos, Celebration)
+- [x] Verification
+    - [x] Manual walkthrough of all features
+    - [ ] Mobile responsiveness check

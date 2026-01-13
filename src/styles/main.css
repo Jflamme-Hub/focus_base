@@ -1,0 +1,125 @@
+:root {
+    /* Google Material-esque Color Palette */
+    --md-sys-color-primary: #00639b;
+    --md-sys-color-on-primary: #ffffff;
+    --md-sys-color-primary-container: #cce5ff;
+    --md-sys-color-on-primary-container: #001d32;
+    
+    --md-sys-color-secondary: #51606f;
+    --md-sys-color-on-secondary: #ffffff;
+    --md-sys-color-secondary-container: #d5e4f7;
+    --md-sys-color-on-secondary-container: #0e1d2a;
+
+    --md-sys-color-tertiary: #68587a;
+    --md-sys-color-on-tertiary: #ffffff;
+    --md-sys-color-tertiary-container: #efdbff;
+    --md-sys-color-on-tertiary-container: #231533;
+
+    --md-sys-color-error: #ba1a1a;
+    --md-sys-color-on-error: #ffffff;
+    --md-sys-color-error-container: #ffdad6;
+    --md-sys-color-on-error-container: #410002;
+
+    --md-sys-color-background: #fcfcff;
+    --md-sys-color-on-background: #1a1c1e;
+    --md-sys-color-surface: #fcfcff;
+    --md-sys-color-on-surface: #1a1c1e;
+    --md-sys-color-surface-variant: #dee3eb;
+    --md-sys-color-on-surface-variant: #42474e;
+    --md-sys-color-outline: #72777f;
+
+    /* Spacing & Layout */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+
+    /* Typography */
+    --font-family-base: 'Roboto', system-ui, sans-serif;
+    --text-display-large: 57px;
+    --text-headline-medium: 28px;
+    --text-body-large: 16px;
+    --text-body-medium: 14px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family-base);
+    background-color: var(--md-sys-color-background);
+    color: var(--md-sys-color-on-background);
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
+}
+
+#app {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+/* Base Layout Structure */
+#sidebar {
+    width: 80px; /* Collapsed state mostly icons */
+    background-color: var(--md-sys-color-surface-variant); /* Slightly darker/distinct */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: var(--spacing-lg);
+    transition: width 0.3s ease;
+    z-index: 10;
+}
+
+#sidebar:hover {
+    width: 250px; /* Expanded state */
+}
+
+#main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    background-color: var(--md-sys-color-background);
+    border-radius: 24px 0 0 24px; /* Rounded corner like modern Android/Material apps */
+    margin-left: -16px; /* Overlap slightly if desired, or just kept clean */
+    margin-left: 0;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.05);
+}
+
+#top-bar {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    padding: 0 var(--spacing-lg);
+    justify-content: space-between;
+}
+
+#view-container {
+    flex: 1;
+    padding: var(--spacing-lg);
+    overflow-y: auto;
+}
+
+/* Utilities */
+.material-symbols-rounded {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+.spinning {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    100% { transform: rotate(360deg); }
+}
