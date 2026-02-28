@@ -1,0 +1,12 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Brain/Artifacts (Optional, but usually good to keep local if personal)
+.gemini/
