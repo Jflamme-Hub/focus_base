@@ -1,4 +1,4 @@
-const CACHE_NAME = 'focus-flow-v1';
+const CACHE_NAME = 'focus-base-v5';
 const ASSETS = [
     './',
     './index.html',
@@ -21,17 +21,31 @@ const ASSETS = [
     './src/pages/Appointments.js',
     './src/pages/Settings.js',
     './src/pages/WeekReview.js',
-    './src/pages/Goals.js'
+    './src/pages/Goals.js',
+    './src/components/RoutineModal.js',
+    './src/pages/Routines.js'
 ];
 
 self.addEventListener('install', (e) => {
+    self.skipWaiting();
     e.waitUntil(
         caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
     );
 });
 
 self.addEventListener('fetch', (e) => {
-    e.respondWith(
-        caches.match(e.request).then((response) => response || fetch(e.request))
+    // Network-first, bypass cache entirely to prevent Firefox hanging
+    e.respondWith(fetch(e.request));
+});
+
+self.addEventListener('activate', (e) => {
+    e.waitUntil(
+        caches.keys().then((keyList) => {
+            return Promise.all(keyList.map((key) => {
+                if (key !== CACHE_NAME) {
+                    return caches.delete(key);
+                }
+            }));
+        }).then(() => self.clients.claim())
     );
 });

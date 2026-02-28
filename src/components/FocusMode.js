@@ -11,6 +11,9 @@ export default class FocusMode {
         const div = document.createElement('div');
         div.id = 'focus-overlay';
         div.innerHTML = `
+            <button id="focus-back-btn" class="btn btn-icon" title="Back to Dashboard" style="position: absolute; top: 24px; left: 24px; color: var(--text-color, white); background: rgba(0,0,0,0.2);">
+                <span class="material-symbols-rounded" style="font-size: 28px;">arrow_back</span>
+            </button>
             <div class="focus-content">
                 <span class="material-symbols-rounded focus-icon">self_improvement</span>
                 <h2>Focus Mode</h2>
@@ -25,6 +28,16 @@ export default class FocusMode {
 
         div.querySelector('#start-timer').addEventListener('click', () => this.toggleTimer());
         div.querySelector('#exit-focus').addEventListener('click', () => this.hide());
+        div.querySelector('#focus-back-btn').addEventListener('click', () => {
+            this.hide();
+            window.dispatchEvent(new CustomEvent('navigate', { detail: { page: 'dashboard' } }));
+
+            // Force sidebar UI update to dashboard
+            const items = document.querySelectorAll('.nav-item');
+            items.forEach(i => i.classList.remove('active'));
+            const dash = document.querySelector('.nav-item[data-page="dashboard"]');
+            if (dash) dash.classList.add('active');
+        });
 
         return div;
     }

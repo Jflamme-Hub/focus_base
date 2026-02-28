@@ -1,6 +1,8 @@
 import Sidebar from './components/Sidebar.js';
 import FocusMode from './components/FocusMode.js';
 import AddModal from './components/AddModal.js';
+import RoutineModal from './components/RoutineModal.js';
+import NotificationManager from './utils/NotificationManager.js';
 import { store } from './utils/Store.js';
 
 class App {
@@ -8,8 +10,10 @@ class App {
         this.init();
         this.focusMode = new FocusMode();
         this.addModal = new AddModal();
+        this.routineModal = new RoutineModal();
+        this.notificationManager = new NotificationManager();
 
-        // Expose modal globally so pages can call it easily (simple bus)
+        // Expose app globally so pages can call modals easily
         window.app = this;
     }
 
@@ -37,12 +41,51 @@ class App {
         this.handleNavigation('dashboard');
     }
 
+    getContrastYIQ(hexcolor) {
+        // Remove hash if present
+        let hex = hexcolor.replace("#", "");
+        if (hex.length === 3) {
+            hex = hex.split('').map(char => char + char).join('');
+        }
+
+        // Convert to RGB
+        const r = parseInt(hex.substr(0, 2), 16);
+        const g = parseInt(hex.substr(2, 2), 16);
+        const b = parseInt(hex.substr(4, 2), 16);
+
+        // Calculate YIQ formula for perceived brightness
+        const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+
+        // Return black or white emphasizing readability
+        return (yiq >= 128) ? '#000000' : '#ffffff';
+    }
+
     applySettings() {
         const settings = store.state.settings;
-        if (settings && settings.themeColor) {
-            document.documentElement.style.setProperty('--md-sys-color-primary', settings.themeColor);
+        if (settings) {
+            const root = document.documentElement.style;
 
-            // Also update the 'School Work' color implicitly if we want, but sidebar uses primary for active state
+            if (settings.themeColor) {
+                root.setProperty('--md-sys-color-primary', settings.themeColor);
+            }
+
+            // Apply category colors and contrast text colors
+            const categories = [
+                { key: 'colorSchool', varName: '--color-school' },
+                { key: 'colorHouse', varName: '--color-house' },
+                { key: 'colorWork', varName: '--color-work' },
+                { key: 'colorEvent', varName: '--color-event' },
+                { key: 'colorGoal', varName: '--color-goal' }
+            ];
+
+            categories.forEach(cat => {
+                if (settings[cat.key]) {
+                    const bgColor = settings[cat.key];
+                    const textColor = this.getContrastYIQ(bgColor);
+                    root.setProperty(cat.varName, bgColor);
+                    root.setProperty(`${cat.varName}-text`, textColor);
+                }
+            });
         }
     }
 
@@ -67,6 +110,10 @@ class App {
                     module = await import('./pages/Dashboard.js');
                     if (header) header.textContent = `Today's Focus`;
                     break;
+                case 'routines':
+                    module = await import('./pages/Routines.js');
+                    if (header) header.textContent = `Daily Routines`;
+                    break;
                 case 'school':
                     module = await import('./pages/SchoolWork.js');
                     if (header) header.textContent = `School Work`;
@@ -82,6 +129,10 @@ class App {
                 case 'calendar':
                     module = await import('./pages/Appointments.js');
                     if (header) header.textContent = `Calendar`;
+                    break;
+                case 'goals':
+                    module = await import('./pages/Goals.js');
+                    if (header) header.textContent = `Personal Goals`;
                     break;
                 case 'settings':
                     module = await import('./pages/Settings.js');

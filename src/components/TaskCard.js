@@ -8,7 +8,8 @@ export default class TaskCard {
 
     create() {
         const div = document.createElement('div');
-        div.className = `card task-card type-${this.task.type} ${this.task.completed ? 'completed' : ''}`;
+        const urgencyClass = this.getUrgencyClass(this.task.time);
+        div.className = `card task-card type-${this.task.type} ${this.task.completed ? 'completed' : ''} ${urgencyClass}`;
 
         const icon = this.getIcon(this.task.type);
 
@@ -27,7 +28,10 @@ export default class TaskCard {
             </div>
             <div class="task-content">
                 <h3 class="task-title">${this.task.title}</h3>
-                <span class="task-time">${this.formatTime(this.task.time)}</span>
+                <span class="task-time">
+                    ${urgencyClass === 'urgency-moderate' ? '<span class="material-symbols-rounded" style="font-size: 14px; vertical-align: middle; margin-right: 4px;">warning</span>' : ''}
+                    ${this.formatTime(this.task.time)}
+                </span>
                 ${extras.length ? `<div class="task-extras">${extras.join('')}</div>` : ''}
             </div>
             <div class="task-actions">
@@ -73,6 +77,35 @@ export default class TaskCard {
         if (window.app && window.app.addModal) {
             window.app.addModal.openForEdit(this.task);
         }
+    }
+
+    getUrgencyClass(timeStr) {
+        if (!timeStr || timeStr === 'No Due Date' || this.task.completed) return '';
+        if (this.task.type === 'house' || this.task.type === 'goal') return ''; // Ignore housework and personal goals
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        let taskDate;
+        if (timeStr.includes('T')) {
+            taskDate = new Date(timeStr);
+        } else {
+            const parts = timeStr.split('-');
+            if (parts.length === 3) {
+                taskDate = new Date(parts[0], parts[1] - 1, parts[2]);
+            } else {
+                return '';
+            }
+        }
+        taskDate.setHours(0, 0, 0, 0);
+
+        const diffTime = taskDate - today;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        if (diffDays < 0) return 'urgency-moderate'; // Overdue is treated as moderate
+        if (diffDays <= 2) return 'urgency-moderate';
+        if (diffDays <= 4) return 'urgency-subtle';
+        return '';
     }
 
     formatTime(timeStr) {

@@ -35,6 +35,10 @@ export default class Sidebar {
                 <span class="material-symbols-rounded">flag</span>
                 <span class="nav-label">Goals</span>
             </div>` : ''}
+            <div class="nav-item" data-page="routines" title="Daily Routines">
+                <span class="material-symbols-rounded">sync</span>
+                <span class="nav-label">Routines</span>
+            </div>
             <div class="nav-item" data-page="calendar" title="Calendar">
                 <span class="material-symbols-rounded">calendar_month</span>
                 <span class="nav-label">Calendar</span>

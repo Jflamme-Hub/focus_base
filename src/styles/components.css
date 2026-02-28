@@ -82,6 +82,42 @@
     opacity: 0.92;
 }
 
+/* Themed Buttons */
+.btn-theme {
+    background-color: var(--theme-color, var(--md-sys-color-primary));
+    color: var(--theme-color-text, var(--md-sys-color-on-primary));
+}
+
+.btn-theme:hover {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+    opacity: 0.92;
+}
+
+.btn-theme-school {
+    --theme-color: var(--color-school);
+    --theme-color-text: var(--color-school-text);
+}
+
+.btn-theme-house {
+    --theme-color: var(--color-house);
+    --theme-color-text: var(--color-house-text);
+}
+
+.btn-theme-work {
+    --theme-color: var(--color-work);
+    --theme-color-text: var(--color-work-text);
+}
+
+.btn-theme-event {
+    --theme-color: var(--color-event);
+    --theme-color-text: var(--color-event-text);
+}
+
+.btn-theme-goal {
+    --theme-color: var(--color-goal);
+    --theme-color-text: var(--color-goal-text);
+}
+
 .btn-icon {
     padding: 8px;
     border-radius: 50%;

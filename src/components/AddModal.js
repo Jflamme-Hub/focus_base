@@ -72,7 +72,7 @@ export default class AddModal {
 
                     <div id="field-notes" class="form-group">
                         <label for="task-notes">Notes</label>
-                        <textarea id="task-notes" name="notes" rows="5" maxlength="200" style="min-height: 100px;" placeholder="Add details... (Max 200 chars)"></textarea>
+                        <textarea id="task-notes" name="notes" rows="8" maxlength="1200" style="min-height: 150px;" placeholder="Add details... (Max 1200 chars)"></textarea>
                     </div>
 
                     <div class="modal-actions">
@@ -107,6 +107,29 @@ export default class AddModal {
 
     handleTypeChange(type) {
         const locField = this.overlay.querySelector('#field-location');
+        const titleInput = this.overlay.querySelector('#task-title');
+
+        // Dynamic placeholders based on type
+        switch (type) {
+            case 'school':
+                titleInput.placeholder = 'e.g. Study for Chemistry exam';
+                break;
+            case 'house':
+                titleInput.placeholder = 'e.g. Do the laundry';
+                break;
+            case 'work':
+                titleInput.placeholder = 'e.g. Shift at Coffee Shop';
+                break;
+            case 'appointment':
+                titleInput.placeholder = 'e.g. Dentist Appointment';
+                break;
+            case 'goal':
+                titleInput.placeholder = 'e.g. Read 5 pages of a book';
+                break;
+            default:
+                titleInput.placeholder = 'What needs to be done?';
+        }
+
         // Both appointments AND work might have locations
         if (type === 'appointment' || type === 'work') {
             locField.style.display = 'block';
@@ -115,7 +138,7 @@ export default class AddModal {
         }
     }
 
-    open(defaultType = 'school') {
+    open(defaultType = 'school', defaultDate = '') {
         this.resetForm();
         this.isEditing = false;
         this.overlay.querySelector('#modal-title').textContent = 'New Task';
@@ -129,6 +152,14 @@ export default class AddModal {
 
         this.overlay.classList.add('open');
         this.overlay.querySelector('input[name="title"]').focus();
+
+        // Use timeout to ensure DOM is ready and native picker updates
+        if (defaultDate) {
+            setTimeout(() => {
+                this.overlay.querySelector('#task-date').value = defaultDate;
+            }, 10);
+        }
+
         this.isOpen = true;
     }
 

@@ -19,19 +19,28 @@
 }
 
 .calendar-task.type-school {
-    background-color: var(--md-sys-color-primary);
+    background-color: var(--color-school, var(--md-sys-color-primary));
+    color: var(--color-school-text, white);
 }
 
 .calendar-task.type-house {
-    background-color: var(--md-sys-color-tertiary);
+    background-color: var(--color-house, var(--md-sys-color-tertiary));
+    color: var(--color-house-text, white);
 }
 
 .calendar-task.type-appointment {
-    background-color: var(--md-sys-color-error);
+    background-color: var(--color-event, var(--md-sys-color-error));
+    color: var(--color-event-text, white);
 }
 
 .calendar-task.type-work {
-    background-color: #FD7F2C;
+    background-color: var(--color-work, #FD7F2C);
+    color: var(--color-work-text, white);
+}
+
+.calendar-task.type-goal {
+    background-color: var(--color-goal, #1E88E5);
+    color: var(--color-goal-text, white);
 }
 
 .calendar-task.type-holiday {

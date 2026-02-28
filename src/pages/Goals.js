@@ -21,7 +21,7 @@ export default class Goals {
             <div class="page-header">
                 <div>
                     <h2>Personal Goals</h2>
-                    <button id="add-goal-btn" class="btn btn-primary" style="background-color: #00BFA5; margin-top: 8px;">
+                    <button id="add-goal-btn" class="btn btn-theme btn-theme-goal" style="margin-top: 8px;">
                         <span class="material-symbols-rounded">add</span>
                         New Goal
                     </button>

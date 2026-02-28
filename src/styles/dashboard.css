@@ -21,9 +21,28 @@
     grid-column: 1 / -1;
 }
 
+.task-column+.task-column {
+    border-left: 2px solid var(--md-sys-color-surface-variant, #e0e0e0);
+    padding-left: var(--spacing-lg);
+}
+
 .welcome-section h2 {
     font-size: var(--text-headline-medium);
     margin-bottom: var(--spacing-xs);
+}
+
+.welcome-section .date-header {
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: var(--spacing-sm);
+}
+
+.welcome-section .daily-quote {
+    font-style: italic;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: var(--spacing-sm);
+    max-width: 500px;
+    line-height: 1.4;
 }
 
 .section-header {
@@ -54,46 +73,31 @@
 
 /* Logic for type colors */
 .task-card.type-school {
-    border-left-color: var(--md-sys-color-primary);
+    --task-color: var(--color-school, var(--md-sys-color-primary));
 }
 
 .task-card.type-house {
-    border-left-color: var(--md-sys-color-tertiary);
+    --task-color: var(--color-house, var(--md-sys-color-tertiary));
 }
 
 .task-card.type-appointment {
-    border-left-color: var(--md-sys-color-error);
+    --task-color: var(--color-event, var(--md-sys-color-error));
 }
 
 .task-card.type-work {
-    border-left-color: #FD7F2C;
+    --task-color: var(--color-work, #FD7F2C);
 }
 
 .task-card.type-goal {
-    border-left-color: #00BFA5;
-    /* Teal / Cyan */
+    --task-color: var(--color-goal, #1E88E5);
 }
 
-/* Orange for Work */
-
-.task-card.type-school .material-symbols-rounded {
-    color: var(--md-sys-color-primary);
+.task-card {
+    border-left-color: var(--task-color, var(--md-sys-color-primary));
 }
 
-.task-card.type-house .material-symbols-rounded {
-    color: var(--md-sys-color-tertiary);
-}
-
-.task-card.type-appointment .material-symbols-rounded {
-    color: var(--md-sys-color-error);
-}
-
-.task-card.type-work .material-symbols-rounded {
-    color: #FD7F2C;
-}
-
-.task-card.type-goal .material-symbols-rounded {
-    color: #00BFA5;
+.task-card .material-symbols-rounded {
+    color: var(--task-color, var(--md-sys-color-primary));
 }
 
 .task-icon-container {
@@ -119,14 +123,18 @@
     color: var(--md-sys-color-outline);
 }
 
-.check-btn {
-    color: var(--md-sys-color-primary);
+.task-card .check-btn {
+    color: var(--task-color, var(--md-sys-color-primary));
     background-color: transparent;
-    border: 1px solid var(--md-sys-color-outline);
+    border: 1px solid var(--task-color, var(--md-sys-color-outline));
 }
 
-.check-btn:hover {
-    background-color: var(--md-sys-color-primary-container);
+.task-card .check-btn:hover {
+    background-color: var(--task-color, var(--md-sys-color-primary));
+}
+
+.task-card .check-btn:hover .material-symbols-rounded {
+    color: white;
 }
 
 /* Completed State */
@@ -140,6 +148,33 @@
 }
 
 .task-card.completed .check-btn {
-    background-color: var(--md-sys-color-primary);
+    background-color: var(--task-color, var(--md-sys-color-primary));
+    border-color: var(--task-color, var(--md-sys-color-primary));
+}
+
+.task-card.completed .check-btn .material-symbols-rounded {
     color: white;
+}
+
+/* ADHD Urgency System */
+
+/* 4 Days Out: Subtle (Red Bold Date) */
+.task-card.urgency-subtle .task-time {
+    color: var(--md-sys-color-error, #B3261E);
+    font-weight: 700;
+}
+
+/* 2 Days Out: Moderate (Red Border + Red Bold Date) */
+.task-card.urgency-moderate {
+    border-left-color: var(--md-sys-color-error, #B3261E) !important;
+}
+
+.task-card.urgency-moderate .task-time {
+    color: var(--md-sys-color-error, #B3261E);
+    font-weight: 700;
+}
+
+.task-card.urgency-moderate .task-icon-container {
+    background-color: rgba(179, 38, 30, 0.1);
+    /* light error tint */
 }

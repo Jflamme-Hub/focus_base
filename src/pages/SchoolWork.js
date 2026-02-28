@@ -12,7 +12,7 @@ export default class SchoolWork {
         this.container.innerHTML = `
             <div class="page-header">
                 <h2>School Work</h2>
-                <button id="add-school-btn" class="btn btn-primary">
+                <button id="add-school-btn" class="btn btn-theme btn-theme-school">
                     <span class="material-symbols-rounded">add</span>
                     New Assignment
                 </button>

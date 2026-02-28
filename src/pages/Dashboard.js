@@ -17,6 +17,27 @@ export default class Dashboard {
         if (hour >= 12 && hour < 17) greeting = 'Good Afternoon';
         if (hour >= 17) greeting = 'Good Evening';
 
+        const QUOTES = [
+            "The secret of getting ahead is getting started.",
+            "It does not matter how slowly you go as long as you do not stop.",
+            "You don't have to be great to start, but you have to start to be great.",
+            "Do what you can, with what you have, where you are.",
+            "Small steps every day.",
+            "Focus on being productive instead of busy.",
+            "One thing at a time.",
+            "Done is better than perfect.",
+            "Progress, not perfection.",
+            "Don't let yesterday take up too much of today.",
+            "Your future is created by what you do today, not tomorrow.",
+            "Believe you can and you're halfway there.",
+            "You are capable of amazing things.",
+            "Strive for progress, not perfection.",
+            "Every day is a fresh start."
+        ];
+
+        const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+        const dailyQuote = QUOTES[dayOfYear % QUOTES.length];
+
         this.container.innerHTML = `
             <div class="dashboard-grid">
                 <section class="welcome-section">
@@ -24,6 +45,7 @@ export default class Dashboard {
                         <div>
                             <h2>${greeting}! ☀️</h2>
                             <p class="date-header">${dateStr}</p>
+                            <p class="daily-quote">"${dailyQuote}"</p>
                         </div>
                         <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
                             <div class="points-badge" style="background: var(--md-sys-color-tertiary-container); color: var(--md-sys-color-on-tertiary-container); padding: 8px 16px; border-radius: 16px; font-weight: bold; display: flex; align-items: center; gap: 8px;">
@@ -46,7 +68,7 @@ export default class Dashboard {
 
                 <section class="task-column">
                     <div class="section-header">
-                        <h3>Up Next</h3>
+                        <h3>Today</h3>
                         <span id="urgent-count" class="badge">0</span>
                     </div>
                     <div id="urgent-tasks" class="task-list"></div>
@@ -54,7 +76,7 @@ export default class Dashboard {
 
                 <section class="task-column">
                     <div class="section-header">
-                        <h3>Later Today</h3>
+                        <h3>Up Next</h3>
                         <span id="later-count" class="badge">0</span>
                     </div>
                     <div id="later-tasks" class="task-list"></div>
@@ -94,9 +116,28 @@ export default class Dashboard {
 
         const tasks = store.getTasks(t => !t.completed); // Only show pending
 
-        // Simple logic: School work is "Urgent", everything else "Later" for now
-        const urgent = tasks.filter(t => t.type === 'school');
-        const later = tasks.filter(t => t.type !== 'school');
+        const todayDate = new Date();
+        const todayStr = todayDate.toISOString().split('T')[0];
+
+        // 7 days from now
+        const nextWeekDate = new Date(todayDate);
+        nextWeekDate.setDate(todayDate.getDate() + 7);
+        const nextWeekStr = nextWeekDate.toISOString().split('T')[0];
+
+        // Urgent: Tasks due exactly today
+        const urgent = tasks.filter(t => t.time && t.time.includes(todayStr));
+
+        // Up Next: Tasks due in the next 7 days (excluding today) and tasks with no exact date
+        const later = tasks.filter(t => {
+            if (!t.time || t.time === 'No Due Date') return true;
+
+            // Extract the date part assuming 'YYYY-MM-DD' or 'YYYY-MM-DDT...' format from Store
+            const taskDateMatch = t.time.match(/^\d{4}-\d{2}-\d{2}/);
+            if (!taskDateMatch) return false;
+
+            const taskDateStr = taskDateMatch[0];
+            return taskDateStr > todayStr && taskDateStr <= nextWeekStr;
+        });
 
         // Update Counts
         const totalEl = this.container.querySelector('#total-count');

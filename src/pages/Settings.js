@@ -7,9 +7,13 @@ export default class Settings {
     }
 
     render() {
-        const settings = store.state.settings || {
-            showSchool: true, showHouse: true, showWork: true, themeColor: '#6750A4', font: 'Roboto'
-        };
+        // Provide fallbacks if they don't exist yet
+        const settings = store.state.settings || {};
+        const cSchool = settings.colorSchool || '#6750A4';
+        const cHouse = settings.colorHouse || '#006A60';
+        const cWork = settings.colorWork || '#FD7F2C';
+        const cEvent = settings.colorEvent || '#B3261E';
+        const cGoal = settings.colorGoal || '#1E88E5';
 
         this.container.innerHTML = `
             <div class="page-header">
@@ -49,11 +53,31 @@ export default class Settings {
                 </section>
 
                 <section style="margin-bottom: 32px;">
-                    <h3>Appearance</h3>
+                    <h3>Appearance & Category Colors</h3>
                     
-                    <div class="setting-item">
-                        <label>Theme Color</label>
-                        <input type="color" id="theme-color" value="${settings.themeColor}">
+                    <div class="setting-item" style="display: flex; justify-content: space-between; align-items: center; max-width: 300px;">
+                        <label>Global Theme</label>
+                        <input type="color" id="theme-color" value="${settings.themeColor || '#6750A4'}">
+                    </div>
+                    <div class="setting-item" style="display: flex; justify-content: space-between; align-items: center; max-width: 300px;">
+                        <label>School Work Color</label>
+                        <input type="color" id="color-school" value="${cSchool}">
+                    </div>
+                    <div class="setting-item" style="display: flex; justify-content: space-between; align-items: center; max-width: 300px;">
+                        <label>House Work Color</label>
+                        <input type="color" id="color-house" value="${cHouse}">
+                    </div>
+                    <div class="setting-item" style="display: flex; justify-content: space-between; align-items: center; max-width: 300px;">
+                        <label>Work Color</label>
+                        <input type="color" id="color-work" value="${cWork}">
+                    </div>
+                    <div class="setting-item" style="display: flex; justify-content: space-between; align-items: center; max-width: 300px;">
+                        <label>Event Color</label>
+                        <input type="color" id="color-event" value="${cEvent}">
+                    </div>
+                    <div class="setting-item" style="display: flex; justify-content: space-between; align-items: center; max-width: 300px;">
+                        <label>Goal Color</label>
+                        <input type="color" id="color-goal" value="${cGoal}">
                     </div>
                 </section>
 
@@ -62,12 +86,10 @@ export default class Settings {
                     <p>Permanently delete all tasks and data.</p>
                     <button id="clear-data-btn" class="btn" style="background-color: var(--md-sys-color-error); color: white; width: 100%;">Clear All Data</button>
                 </section>
-
-                <button id="save-settings" class="btn btn-primary">Save Changes</button>
             </div>
         `;
 
-        this.container.querySelector('#save-settings').addEventListener('click', (e) => {
+        const saveSettings = () => {
             try {
                 const newSettings = {
                     showSchool: this.container.querySelector('#toggle-school').checked,
@@ -75,23 +97,27 @@ export default class Settings {
                     showWork: this.container.querySelector('#toggle-work').checked,
                     showGoals: this.container.querySelector('#toggle-goals').checked,
                     themeColor: this.container.querySelector('#theme-color').value,
+                    colorSchool: this.container.querySelector('#color-school').value,
+                    colorHouse: this.container.querySelector('#color-house').value,
+                    colorWork: this.container.querySelector('#color-work').value,
+                    colorEvent: this.container.querySelector('#color-event').value,
+                    colorGoal: this.container.querySelector('#color-goal').value,
                 };
-
                 store.updateSettings(newSettings);
-
-                // Visual feedback
-                const btn = e.target;
-                const originalText = btn.textContent;
-                btn.textContent = 'Saved!';
-                btn.disabled = true;
-                setTimeout(() => {
-                    btn.textContent = originalText;
-                    btn.disabled = false;
-                }, 1500);
             } catch (err) {
                 console.error('Save failed:', err);
-                alert('Failed to save settings: ' + err.message);
             }
+        };
+
+        // Auto-save on any input change
+        const checkInputs = this.container.querySelectorAll('input[type="checkbox"]');
+        checkInputs.forEach(input => input.addEventListener('change', saveSettings));
+
+        // Auto-save on color picker changes (both as they drag and when they close)
+        const colorInputs = this.container.querySelectorAll('input[type="color"]');
+        colorInputs.forEach(input => {
+            input.addEventListener('input', saveSettings);
+            input.addEventListener('change', saveSettings);
         });
 
         this.container.querySelector('#clear-data-btn').addEventListener('click', () => {

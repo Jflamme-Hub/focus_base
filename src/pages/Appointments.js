@@ -24,7 +24,7 @@ export default class Appointments {
                     <button id="cal-next" class="btn btn-icon"><span class="material-symbols-rounded">chevron_right</span></button>
                 </div>
                 <!-- Add Button for Calendar specifically -->
-                 <button id="add-event-btn" class="btn btn-primary">
+                 <button id="add-event-btn" class="btn btn-theme btn-theme-event">
                     <span class="material-symbols-rounded">add</span>
                     New Event
                 </button>
@@ -45,7 +45,12 @@ export default class Appointments {
 
         this.container.querySelector('#add-event-btn').addEventListener('click', () => {
             if (window.app && window.app.addModal) {
-                window.app.addModal.open('appointment');
+                // Pass the 1st of the currently viewed month so the date picker opens to it
+                const vYear = this.displayDate.getFullYear();
+                const vMonth = String(this.displayDate.getMonth() + 1).padStart(2, '0');
+                const defaultDateStr = `${vYear}-${vMonth}-01`;
+
+                window.app.addModal.open('appointment', defaultDateStr);
             }
         });
 
