@@ -1,4 +1,4 @@
-import { store } from '../utils/Store.js';
+import { store } from '../utils/Store.js?v=9';
 
 export default class Settings {
     constructor(container) {
@@ -9,18 +9,14 @@ export default class Settings {
     render() {
         // Provide fallbacks if they don't exist yet
         const settings = store.state.settings || {};
-        const cSchool = settings.colorSchool || '#6750A4';
+        const cSchool = settings.colorSchool || '#1565C0';
         const cHouse = settings.colorHouse || '#006A60';
         const cWork = settings.colorWork || '#FD7F2C';
         const cEvent = settings.colorEvent || '#B3261E';
         const cGoal = settings.colorGoal || '#1E88E5';
 
         this.container.innerHTML = `
-            <div class="page-header">
-                <h2>Settings</h2>
-            </div>
-            
-            <div style="max-width: 600px; padding: 16px;">
+            <div>
                 
                 <section style="margin-bottom: 32px;">
                     <h3>Customize Categories</h3>

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'focus-base-v7';
+const CACHE_NAME = 'focus-base-v9';
 const ASSETS = [
     './',
     './index.html',
@@ -7,6 +7,9 @@ const ASSETS = [
     './app_icon_512.png',
     './src/app.js',
     './src/utils/Store.js',
+    './src/components/Sidebar.js',
+    './src/pages/Notes.js',
+    './src/styles/notes.css',
     './src/styles/main.css',
     './src/styles/dashboard.css',
     './src/styles/components.css',

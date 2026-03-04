@@ -1,0 +1,196 @@
+.notes-container {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.notes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.notes-search-bar {
+    display: flex;
+    flex: 1;
+    background: var(--surface-variant, #f4eff4);
+    border-radius: 24px;
+    padding: 0.5rem 1rem;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.notes-search-bar input {
+    border: none;
+    background: transparent;
+    flex: 1;
+    outline: none;
+    font-size: 1rem;
+}
+
+.notes-masonry {
+    column-count: 1;
+    column-gap: 1rem;
+}
+
+@media (min-width: 600px) {
+    .notes-masonry {
+        column-count: 2;
+    }
+}
+
+@media (min-width: 900px) {
+    .notes-masonry {
+        column-count: 3;
+    }
+}
+
+.note-card {
+    break-inside: avoid;
+    background: var(--surface, #fdf8fd);
+    border: 1px solid var(--outline, #79747e);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.note-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.note-card h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.note-card-content {
+    font-size: 0.9rem;
+    color: var(--on-surface-variant, #49454f);
+    max-height: 200px;
+    overflow: hidden;
+    position: relative;
+    white-space: pre-wrap;
+}
+
+.note-card-content .checklist-preview {
+    white-space: normal;
+}
+
+.note-card-content.checklist-preview .chk-line {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.note-card-content.checklist-preview .chk-line.done {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+.note-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+}
+
+.note-tag {
+    background: var(--primary-container, #eaddff);
+    color: var(--on-primary-container, #21005d);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+}
+
+/* Modal Editor Specifics */
+.note-editor-modal .modal-content {
+    max-width: 600px;
+    width: 95%;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.note-editor-tags {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.note-editor-tags input {
+    border: none;
+    border-bottom: 1px solid #ccc;
+    outline: none;
+    padding: 4px;
+}
+
+.note-editor-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.note-editor-textarea {
+    flex: 1;
+    width: 100%;
+    border: none;
+    resize: none;
+    outline: none;
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem;
+    line-height: 1.5;
+}
+
+.checklist-editor {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.checklist-item input[type="text"] {
+    flex: 1;
+    border: none;
+    border-bottom: 1px solid transparent;
+    outline: none;
+    font-size: 1rem;
+    padding: 4px 0;
+}
+
+.checklist-item input[type="text"]:focus {
+    border-bottom: 1px solid var(--md-sys-color-primary, #6750A4);
+}
+
+.checklist-item input[type="checkbox"] {
+    transform: scale(1.2);
+}
+
+.checklist-item.done input[type="text"] {
+    text-decoration: line-through;
+    color: #888;
+}
+
+.add-checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--md-sys-color-primary, #6750A4);
+    cursor: pointer;
+    padding: 0.5rem 0;
+}

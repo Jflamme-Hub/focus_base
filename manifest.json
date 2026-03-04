@@ -84,5 +84,17 @@
   },
   "launch_handler": {
     "client_mode": "focus-existing"
+  },
+  "note_taking": {
+    "new_note_url": "/?action=new-note"
+  },
+  "share_target": {
+    "action": "/?action=share",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
   }
 }

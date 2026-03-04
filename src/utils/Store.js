@@ -124,6 +124,7 @@ export default class Store {
                 { id: 1, title: 'Welcome to your new organizer!', type: 'school', time: 'Today', completed: false, created: Date.now() }
             ],
             routines: [],
+            notes: [],
             points: 0,
             streak: 0,
             weeklyPoints: 0,
@@ -133,7 +134,7 @@ export default class Store {
             settings: {
                 username: 'Friend',
                 themeColor: '#6750A4', // Default Primary
-                colorSchool: '#6750A4',
+                colorSchool: '#1565C0', // Changed to deep blue from purple
                 colorHouse: '#006A60',
                 colorWork: '#FD7F2C',
                 colorEvent: '#B3261E',
@@ -157,6 +158,7 @@ export default class Store {
             if (!parsed.currentWeek) parsed.currentWeek = this.getCurrentWeek();
             if (!parsed.awardedThisWeek) parsed.awardedThisWeek = { bronze: false, silver: false, gold: false };
             if (!parsed.routines) parsed.routines = [];
+            if (!parsed.notes) parsed.notes = [];
 
             // Deep merge simply: ensure settings exist
             return {
@@ -373,6 +375,40 @@ export default class Store {
         this.save();
     }
 
+    // --- Notes CRUD ---
+    addNote(note) {
+        const newNote = {
+            id: Date.now(),
+            title: '',
+            content: '',
+            tags: [],
+            isChecklist: false,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            ...note
+        };
+        this.state.notes.push(newNote);
+        this.save();
+        return newNote;
+    }
+
+    updateNote(updatedNote) {
+        const index = this.state.notes.findIndex(n => n.id === updatedNote.id);
+        if (index !== -1) {
+            this.state.notes[index] = {
+                ...this.state.notes[index],
+                ...updatedNote,
+                updatedAt: new Date().toISOString()
+            };
+            this.save();
+        }
+    }
+
+    deleteNote(id) {
+        this.state.notes = this.state.notes.filter(n => n.id !== id);
+        this.save();
+    }
+
     clearData() {
         this.state.tasks = [];
         this.state.routines = [];
@@ -381,6 +417,30 @@ export default class Store {
         this.state.weeklyPoints = 0;
         this.state.badges = { bronze: 0, silver: 0, gold: 0 };
         this.state.awardedThisWeek = { bronze: false, silver: false, gold: false };
+
+        // Wipe settings back to defaults entirely
+        const freshState = this.load();
+
+        // Because load() merges with what's in localStorage, 
+        // we need to explicitly inject the clean defaults it returns when localStorage is empty.
+        // We'll just hardcode the default wipe here for settings.
+        this.state.settings = {
+            username: 'Friend',
+            themeColor: '#6750A4',
+            colorSchool: '#1565C0',
+            colorHouse: '#006A60',
+            colorWork: '#FD7F2C',
+            colorEvent: '#B3261E',
+            colorGoal: '#1E88E5',
+            font: 'Roboto',
+            showSchool: true,
+            showHouse: true,
+            showWork: true,
+            showGoals: true,
+            showCalendar: true
+        };
+
+        this.state.notes = [];
         this.save();
     }
 

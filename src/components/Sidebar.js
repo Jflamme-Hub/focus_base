@@ -1,4 +1,4 @@
-import { store } from '../utils/Store.js';
+import { store } from '../utils/Store.js?v=9';
 
 export default class Sidebar {
     constructor(containerId) {
@@ -35,6 +35,10 @@ export default class Sidebar {
                 <span class="material-symbols-rounded">flag</span>
                 <span class="nav-label">Goals</span>
             </div>` : ''}
+            <div class="nav-item" data-page="notes" title="Notes & Lists">
+                <span class="material-symbols-rounded">edit_note</span>
+                <span class="nav-label">Notes</span>
+            </div>
             <div class="nav-item" data-page="routines" title="Daily Routines">
                 <span class="material-symbols-rounded">sync</span>
                 <span class="nav-label">Routines</span>

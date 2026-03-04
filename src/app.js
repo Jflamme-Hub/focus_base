@@ -3,7 +3,7 @@ import FocusMode from './components/FocusMode.js';
 import AddModal from './components/AddModal.js';
 import RoutineModal from './components/RoutineModal.js';
 import NotificationManager from './utils/NotificationManager.js';
-import { store } from './utils/Store.js';
+import { store } from './utils/Store.js?v=9';
 
 class App {
     constructor() {
@@ -38,6 +38,32 @@ class App {
         // Initial Load
         this.applySettings();
         this.setupGlobalListeners();
+
+        // Handle PWA URL Intents (Share Target / New Note)
+        const urlParams = new URLSearchParams(window.location.search);
+        const action = urlParams.get('action');
+
+        if (action === 'share' || action === 'new-note') {
+            const title = urlParams.get('title') || '';
+            const text = urlParams.get('text') || '';
+            const url = urlParams.get('url') || '';
+
+            // Wait a tick for router to settle, then open note editor
+            setTimeout(() => {
+                this.handleNavigation('notes');
+                setTimeout(() => {
+                    if (this.currentView && this.currentView.openEditor) {
+                        const content = [text, url].filter(Boolean).join('\n\n');
+                        this.currentView.openEditor({ title, content, tags: ['Shared'], isChecklist: false });
+                    }
+                }, 300); // 300ms wait for view to mount
+            }, 100);
+
+            // Clean up URL so refresh doesn't trigger it again
+            window.history.replaceState({}, document.title, window.location.pathname);
+            return;
+        }
+
         this.handleNavigation('dashboard');
     }
 
@@ -107,39 +133,43 @@ class App {
         try {
             switch (page) {
                 case 'dashboard':
-                    module = await import('./pages/Dashboard.js');
+                    module = await import('./pages/Dashboard.js?v=8');
                     if (header) header.textContent = `Today's Focus`;
                     break;
                 case 'routines':
-                    module = await import('./pages/Routines.js');
+                    module = await import('./pages/Routines.js?v=8');
                     if (header) header.textContent = `Daily Routines`;
                     break;
                 case 'school':
-                    module = await import('./pages/SchoolWork.js');
+                    module = await import('./pages/SchoolWork.js?v=8');
                     if (header) header.textContent = `School Work`;
                     break;
                 case 'house':
-                    module = await import('./pages/HouseWork.js');
+                    module = await import('./pages/HouseWork.js?v=8');
                     if (header) header.textContent = `House Work`;
                     break;
                 case 'work':
-                    module = await import('./pages/Work.js');
+                    module = await import('./pages/Work.js?v=8');
                     if (header) header.textContent = `Work`;
                     break;
                 case 'calendar':
-                    module = await import('./pages/Appointments.js');
+                    module = await import('./pages/Appointments.js?v=8');
                     if (header) header.textContent = `Calendar`;
                     break;
                 case 'goals':
-                    module = await import('./pages/Goals.js');
+                    module = await import('./pages/Goals.js?v=8');
                     if (header) header.textContent = `Personal Goals`;
                     break;
+                case 'notes':
+                    module = await import('./pages/Notes.js?v=8');
+                    if (header) header.textContent = `Notes & Lists`;
+                    break;
                 case 'settings':
-                    module = await import('./pages/Settings.js');
+                    module = await import('./pages/Settings.js?v=9');
                     if (header) header.textContent = `Settings`;
                     break;
                 case 'review':
-                    module = await import('./pages/WeekReview.js');
+                    module = await import('./pages/WeekReview.js?v=8');
                     if (header) header.textContent = `Progress`;
                     break;
                 default:
