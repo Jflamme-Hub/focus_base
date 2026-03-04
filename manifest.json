@@ -2,7 +2,7 @@
   "id": "/",
   "name": "Focus Base",
   "short_name": "Focus Base",
-  "description": "An organization and routine-building app designed specifically for neurodivergent students to help stay focused, reduce overwhelm, and manage school work and daily habits with confidence.",
+  "description": "An organization and routine-building app designed specifically for neurodivergent students to help stay focused, reduce overwhelm, and manage school work and daily habits with confidence. 100% offline with complete data privacy—your information never leaves your device.",
   "start_url": "./index.html",
   "scope": "/",
   "display": "standalone",

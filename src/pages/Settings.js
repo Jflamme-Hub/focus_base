@@ -77,6 +77,16 @@ export default class Settings {
                     </div>
                 </section>
 
+                <section style="margin-bottom: 32px; background: var(--primary-container, #eaddff); padding: 16px; border-radius: 8px;">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <span class="material-symbols-rounded" style="color: var(--md-sys-color-primary, #6750A4);">lock</span>
+                        <h3 style="margin: 0; color: var(--md-sys-color-primary, #6750A4);">Privacy & Data Security</h3>
+                    </div>
+                    <p style="margin: 0; font-size: 0.9rem; line-height: 1.4;">
+                        <strong>Your data is 100% yours.</strong> All of your tasks, routines, and notes are saved directly on your personal device. Focus Base works completely offline and never uploads your personal data to any servers or the cloud.
+                    </p>
+                </section>
+
                 <section style="margin-bottom: 32px; border: 1px solid var(--md-sys-color-error); padding: 16px; border-radius: 8px;">
                     <h3 style="color: var(--md-sys-color-error);">Danger Zone</h3>
                     <p>Permanently delete all tasks and data.</p>
