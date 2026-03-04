@@ -1,9 +1,10 @@
-const CACHE_NAME = 'focus-base-v6';
+const CACHE_NAME = 'focus-base-v7';
 const ASSETS = [
     './',
     './index.html',
     './manifest.json',
-    './app_icon.png',
+    './app_icon_192.png',
+    './app_icon_512.png',
     './src/app.js',
     './src/utils/Store.js',
     './src/styles/main.css',
