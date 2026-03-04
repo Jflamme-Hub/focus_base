@@ -1,4 +1,4 @@
-const CACHE_NAME = 'focus-base-v5';
+const CACHE_NAME = 'focus-base-v6';
 const ASSETS = [
     './',
     './index.html',
@@ -34,8 +34,10 @@ self.addEventListener('install', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
-    // Network-first, bypass cache entirely to prevent Firefox hanging
-    e.respondWith(fetch(e.request));
+    // Network first, fallback to cache
+    e.respondWith(
+        fetch(e.request).catch(() => caches.match(e.request))
+    );
 });
 
 self.addEventListener('activate', (e) => {

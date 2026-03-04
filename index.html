@@ -49,19 +49,16 @@
     <!-- Application Logic -->
     <script type="module" src="./src/app.js?v=7"></script>
     <script>
-        // NUCLEAR CACHE CLEAR: Kill all Service Workers and Caches
+        // Register Service Worker for PWA
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then(function (registrations) {
-                for (let registration of registrations) {
-                    registration.unregister();
-                    console.log('Unregistered old Service Worker.');
-                }
-            });
-        }
-        if ('caches' in window) {
-            caches.keys().then(function (names) {
-                for (let name of names) caches.delete(name);
-                console.log('Cleared all browser caches.');
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(error => {
+                        console.error('ServiceWorker registration failed: ', error);
+                    });
             });
         }
     </script>

@@ -1,4 +1,5 @@
 {
+  "id": "/",
   "name": "Focus Base",
   "short_name": "Focus Base",
   "description": "An organization and routine-building app designed specifically for neurodivergent students to help stay focused, reduce overwhelm, and manage school work and daily habits with confidence.",
@@ -7,6 +8,11 @@
   "background_color": "#ffffff",
   "theme_color": "#6750A4",
   "orientation": "portrait",
+  "categories": [
+    "productivity",
+    "education",
+    "lifestyle"
+  ],
   "icons": [
     {
       "src": "./app_icon.png",
@@ -19,6 +25,15 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "./screenshot1.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Focus Base Dashboard"
     }
   ]
 }
