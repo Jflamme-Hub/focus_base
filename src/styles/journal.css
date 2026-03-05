@@ -1,0 +1,148 @@
+/* Journal Page Styles */
+
+.journal-container {
+    padding: 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    height: 100%;
+}
+
+.journal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--surface, #fdf8fd);
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.journal-date-selector {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.journal-current-date {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--on-surface, #1d1b20);
+    min-width: 250px;
+    text-align: center;
+}
+
+.journal-paper-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 2rem;
+}
+
+/* 
+ * The Lined Paper CSS Magic
+ * We use a repeating linear-gradient to create the horizontal blue lines.
+ * We use a solid vertical border for the red margin line.
+ */
+.journal-paper {
+    background-color: #fdfdfd;
+    width: 100%;
+    max-width: 700px;
+    min-height: 60vh;
+    border-radius: 4px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    padding: 40px 20px 40px 60px;
+    /* Padding for the red margin line (60px) */
+
+    /* Variables for easy line height adjustment */
+    --line-height: 28px;
+    --line-color: #d1d8e0;
+
+    /* Background grid */
+    background-image: repeating-linear-gradient(transparent,
+            transparent calc(var(--line-height) - 1px),
+            var(--line-color) var(--line-height));
+    background-size: 100% calc(var(--line-height));
+    /* Start the lines lower down from the top edge */
+    background-position: 0 40px;
+}
+
+/* The red vertical margin line */
+.journal-margin-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 45px;
+    width: 2px;
+    background-color: #ff9999;
+    z-index: 1;
+}
+
+.journal-textarea {
+    position: relative;
+    z-index: 2;
+    /* Sit above the margin line */
+    width: 100%;
+    height: 100%;
+    min-height: 50vh;
+    background: transparent;
+    border: none;
+    outline: none;
+    resize: none;
+
+    /* Align text exactly with the background lines */
+    line-height: 28px;
+    /* Must match --line-height above */
+    font-family: 'Handlee', 'Comic Sans MS', 'Shadows Into Light', cursive, sans-serif;
+    /* Give it a slightly handwritten or casual feel */
+    font-size: 1.1rem;
+    color: #2c3e50;
+
+    /* Shift text down so it sits on the baseline */
+    padding-top: 6px;
+    box-sizing: border-box;
+
+    /* Prevent default textarea styling */
+    overflow: hidden;
+}
+
+.journal-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 1rem;
+}
+
+.save-status {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    font-style: italic;
+    min-height: 1.5em;
+    /* Keep space even when empty */
+}
+
+/* Responsiveness */
+@media (max-width: 600px) {
+    .journal-header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .journal-current-date {
+        font-size: 1.2rem;
+        min-width: auto;
+    }
+
+    .journal-paper {
+        padding-left: 50px;
+    }
+
+    .journal-margin-line {
+        left: 35px;
+    }
+}

@@ -10,17 +10,16 @@ export default class Work {
 
     render() {
         this.container.innerHTML = `
-            <div class="page-header">
-                <h2>Work & Shifts</h2>
-                <button id="add-work-btn" class="btn btn-primary" style="background-color: #FD7F2C;">
+            <div class="page-header" style="justify-content: flex-end;">
+                <button id="add-work-btn" class="btn btn-primary" style="background-color: var(--color-work, #FD7F2C); color: var(--color-work-text, #000);">
                     <span class="material-symbols-rounded">add</span>
-                    New Shift
+                    New Work Task
                 </button>
             </div>
             
             <div class="task-sections">
                 <section>
-                    <h3>Upcoming Shifts</h3>
+                    <h3>Upcoming Focus</h3>
                     <div id="work-list" class="task-list"></div>
                 </section>
             </div>

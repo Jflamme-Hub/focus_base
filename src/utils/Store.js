@@ -145,7 +145,8 @@ export default class Store {
                 showWork: true,
                 showGoals: true,
                 showCalendar: true
-            }
+            },
+            journal: []
         };
 
         const stored = localStorage.getItem(this.STORAGE_KEY);
@@ -159,6 +160,7 @@ export default class Store {
             if (!parsed.awardedThisWeek) parsed.awardedThisWeek = { bronze: false, silver: false, gold: false };
             if (!parsed.routines) parsed.routines = [];
             if (!parsed.notes) parsed.notes = [];
+            if (!parsed.journal) parsed.journal = [];
 
             // Deep merge simply: ensure settings exist
             return {
@@ -409,6 +411,37 @@ export default class Store {
         this.save();
     }
 
+    // --- Journal CRUD ---
+    addJournalEntry(entry) {
+        const newEntry = {
+            id: Date.now(),
+            date: new Date().toISOString().split('T')[0],
+            content: '',
+            createdAt: new Date().toISOString(),
+            ...entry
+        };
+        this.state.journal.push(newEntry);
+        this.save();
+        return newEntry;
+    }
+
+    updateJournalEntry(updatedEntry) {
+        const index = this.state.journal.findIndex(j => j.id === updatedEntry.id);
+        if (index !== -1) {
+            this.state.journal[index] = {
+                ...this.state.journal[index],
+                ...updatedEntry,
+                updatedAt: new Date().toISOString()
+            };
+            this.save();
+        }
+    }
+
+    deleteJournalEntry(id) {
+        this.state.journal = this.state.journal.filter(j => j.id !== id);
+        this.save();
+    }
+
     clearData() {
         this.state.tasks = [];
         this.state.routines = [];
@@ -441,6 +474,7 @@ export default class Store {
         };
 
         this.state.notes = [];
+        this.state.journal = [];
         this.save();
     }
 

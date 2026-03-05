@@ -10,8 +10,7 @@ export default class SchoolWork {
 
     render() {
         this.container.innerHTML = `
-            <div class="page-header">
-                <h2>School Work</h2>
+            <div class="page-header" style="justify-content: flex-end;">
                 <button id="add-school-btn" class="btn btn-theme btn-theme-school">
                     <span class="material-symbols-rounded">add</span>
                     New Assignment

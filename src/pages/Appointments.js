@@ -9,6 +9,18 @@ export default class Appointments {
 
         this.render();
         this.unsubscribe = store.subscribe(() => this.render());
+
+        // Ensure html2canvas is available for sharing
+        this.loadHtml2Canvas();
+    }
+
+    loadHtml2Canvas() {
+        if (!window.html2canvas && !document.getElementById('html2canvas-script')) {
+            const script = document.createElement('script');
+            script.id = 'html2canvas-script';
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+            document.head.appendChild(script);
+        }
     }
 
     render() {
@@ -17,20 +29,24 @@ export default class Appointments {
 
         this.container.innerHTML = `
             <div class="page-header">
-                <h2>Calendar</h2>
                 <div class="calendar-controls">
                     <button id="cal-prev" class="btn btn-icon"><span class="material-symbols-rounded">chevron_left</span></button>
                     <span style="min-width: 150px; text-align: center; font-weight: 500;">${monthName} ${year}</span>
                     <button id="cal-next" class="btn btn-icon"><span class="material-symbols-rounded">chevron_right</span></button>
                 </div>
-                <!-- Add Button for Calendar specifically -->
-                 <button id="add-event-btn" class="btn btn-theme btn-theme-event">
-                    <span class="material-symbols-rounded">add</span>
-                    New Event
-                </button>
+                <!-- Controls for Calendar -->
+                <div style="display: flex; gap: 8px;">
+                    <button id="share-cal-btn" class="btn secondary" title="Share Calendar Image">
+                        <span class="material-symbols-rounded">share</span>
+                    </button>
+                    <button id="add-event-btn" class="btn btn-theme btn-theme-event">
+                        <span class="material-symbols-rounded">add</span>
+                        New Event
+                    </button>
+                </div>
             </div>
             
-            <div class="calendar-grid">
+            <div class="calendar-grid" id="calendar-capture-area" style="background: var(--surface); padding: 1rem; border-radius: 12px;">
                 <div class="weekday">Sun</div>
                 <div class="weekday">Mon</div>
                 <div class="weekday">Tue</div>
@@ -54,8 +70,77 @@ export default class Appointments {
             }
         });
 
+        this.container.querySelector('#share-cal-btn').addEventListener('click', (e) => {
+            const btn = e.currentTarget;
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<span class="material-symbols-rounded spinning">refresh</span>';
+            btn.disabled = true;
+
+            this.shareCalendar().finally(() => {
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+            });
+        });
+
         this.container.querySelector('#cal-prev').addEventListener('click', () => this.changeMonth(-1));
         this.container.querySelector('#cal-next').addEventListener('click', () => this.changeMonth(1));
+    }
+
+    async shareCalendar() {
+        if (!window.html2canvas) {
+            alert("Share feature is still loading, please try again in a few seconds.");
+            return;
+        }
+
+        try {
+            const captureArea = this.container.querySelector('#calendar-capture-area');
+            const monthName = this.displayDate.toLocaleString('default', { month: 'long' });
+            const year = this.displayDate.getFullYear();
+
+            // Render canvas
+            const canvas = await window.html2canvas(captureArea, {
+                scale: 2, // Higher resolution
+                backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--surface') || '#fdf8fd',
+                logging: false
+            });
+
+            // Convert to blob
+            canvas.toBlob(async (blob) => {
+                const fileName = `calendar-${monthName}-${year}.png`;
+                const file = new File([blob], fileName, { type: 'image/png' });
+
+                // Try native Web Share API
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    try {
+                        await navigator.share({
+                            files: [file],
+                            title: `${monthName} Schedule`,
+                            text: `Here is my schedule for ${monthName} ${year}!`
+                        });
+                        return;
+                    } catch (err) {
+                        if (err.name !== 'AbortError') {
+                            console.error("Error sharing:", err);
+                        }
+                    }
+                }
+
+                // Fallback: Download the image directly
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+            }, 'image/png');
+
+        } catch (error) {
+            console.error("Failed to capture calendar:", error);
+            alert("Could not generate calendar image.");
+        }
     }
 
     changeMonth(delta) {

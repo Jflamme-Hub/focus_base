@@ -1,7 +1,8 @@
-const CACHE_NAME = 'focus-base-v9';
+const CACHE_NAME = 'focus-base-v6';
 const ASSETS = [
     './',
     './index.html',
+    './privacy.html',
     './manifest.json',
     './app_icon_192.png',
     './app_icon_512.png',

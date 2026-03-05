@@ -16,23 +16,22 @@ export default class Dashboard {
         let greeting = 'Good Morning';
         if (hour >= 12 && hour < 17) greeting = 'Good Afternoon';
         if (hour >= 17) greeting = 'Good Evening';
-
         const QUOTES = [
-            "The secret of getting ahead is getting started.",
-            "It does not matter how slowly you go as long as you do not stop.",
-            "You don't have to be great to start, but you have to start to be great.",
-            "Do what you can, with what you have, where you are.",
-            "Small steps every day.",
-            "Focus on being productive instead of busy.",
-            "One thing at a time.",
-            "Done is better than perfect.",
-            "Progress, not perfection.",
-            "Don't let yesterday take up too much of today.",
-            "Your future is created by what you do today, not tomorrow.",
-            "Believe you can and you're halfway there.",
-            "You are capable of amazing things.",
-            "Strive for progress, not perfection.",
-            "Every day is a fresh start."
+            "It's okay to do things differently if it works for you.",
+            "Rest is productive. Your brain needs downtime.",
+            "Your worth is not measured by your productivity.",
+            "Small steps are still steps. Every bit counts.",
+            "If a task feels too big, try making it smaller.",
+            "Work with your brain, not against it.",
+            "Routines are tools to help you, not strict rules.",
+            "Give yourself permission to do things the 'wrong' way.",
+            "Celebrate the small wins, they are still wins.",
+            "There is no 'normal', only what works best for you.",
+            "Be gentle with your energy today.",
+            "If you need a break, take it without guilt.",
+            "Executive dysfunction is not laziness.",
+            "Accommodations are simply the tools you need to succeed.",
+            "Done is better than perfect."
         ];
 
         const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);

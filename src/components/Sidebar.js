@@ -39,6 +39,10 @@ export default class Sidebar {
                 <span class="material-symbols-rounded">edit_note</span>
                 <span class="nav-label">Notes</span>
             </div>
+            <div class="nav-item" data-page="journal" title="Journal">
+                <span class="material-symbols-rounded">book</span>
+                <span class="nav-label">Journal</span>
+            </div>
             <div class="nav-item" data-page="routines" title="Daily Routines">
                 <span class="material-symbols-rounded">sync</span>
                 <span class="nav-label">Routines</span>

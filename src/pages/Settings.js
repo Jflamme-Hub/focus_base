@@ -82,9 +82,10 @@ export default class Settings {
                         <span class="material-symbols-rounded" style="color: var(--md-sys-color-primary, #6750A4);">lock</span>
                         <h3 style="margin: 0; color: var(--md-sys-color-primary, #6750A4);">Privacy & Data Security</h3>
                     </div>
-                    <p style="margin: 0; font-size: 0.9rem; line-height: 1.4;">
+                    <p style="margin: 0; font-size: 0.9rem; line-height: 1.4; margin-bottom: 12px;">
                         <strong>Your data is 100% yours.</strong> All of your tasks, routines, and notes are saved directly on your personal device. Focus Base works completely offline and never uploads your personal data to any servers or the cloud.
                     </p>
+                    <a href="./privacy.html" target="_blank" style="color: var(--md-sys-color-primary, #6750A4); font-size: 0.9rem; font-weight: 500; text-decoration: underline;">View Full Privacy Policy</a>
                 </section>
 
                 <section style="margin-bottom: 32px; border: 1px solid var(--md-sys-color-error); padding: 16px; border-radius: 8px;">

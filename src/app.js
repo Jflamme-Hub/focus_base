@@ -2,6 +2,7 @@ import Sidebar from './components/Sidebar.js';
 import FocusMode from './components/FocusMode.js';
 import AddModal from './components/AddModal.js';
 import RoutineModal from './components/RoutineModal.js';
+import HelpModal from './components/HelpModal.js';
 import NotificationManager from './utils/NotificationManager.js';
 import { store } from './utils/Store.js?v=9';
 
@@ -11,7 +12,10 @@ class App {
         this.focusMode = new FocusMode();
         this.addModal = new AddModal();
         this.routineModal = new RoutineModal();
+        this.helpModal = new HelpModal();
         this.notificationManager = new NotificationManager();
+
+        this.currentPageName = 'dashboard';
 
         // Expose app globally so pages can call modals easily
         window.app = this;
@@ -123,11 +127,19 @@ class App {
                 this.addModal.open();
             });
         }
+
+        const helpBtn = document.getElementById('global-help-btn');
+        if (helpBtn) {
+            helpBtn.addEventListener('click', () => {
+                this.helpModal.open(this.currentPageName);
+            });
+        }
     }
 
     async handleNavigation(page) {
         const container = document.getElementById('view-container');
         const header = document.querySelector('#top-bar h1'); // Target H1 specifically to avoid wiping button
+        this.currentPageName = page;
 
         let module;
         try {
@@ -163,6 +175,10 @@ class App {
                 case 'notes':
                     module = await import('./pages/Notes.js?v=8');
                     if (header) header.textContent = `Notes & Lists`;
+                    break;
+                case 'journal':
+                    module = await import('./pages/Journal.js?v=8');
+                    if (header) header.textContent = `Journal`;
                     break;
                 case 'settings':
                     module = await import('./pages/Settings.js?v=9');

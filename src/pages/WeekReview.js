@@ -62,6 +62,19 @@ export default class WeekReview {
                     ${store.state.settings.showWork ? this.createStatCard('Work', stats.distribution.work, 'work', '#FD7F2C') : ''}
                     ${this.createStatCard('Events', stats.distribution.appointment, 'event', 'var(--md-sys-color-error)')}
                 </div>
+                
+                <!-- How to Earn Points Info Card -->
+                <div style="background: var(--surface, #fdf8fd); padding: 24px; border-radius: 24px; border: 1px solid var(--outline-variant, #cac4d0); margin-top: 32px;">
+                    <h3 style="margin-top: 0; margin-bottom: 16px; color: var(--on-surface); display: flex; align-items: center; gap: 8px;">
+                        <span class="material-symbols-rounded" style="color: var(--md-sys-color-primary);">info</span>
+                        How to Earn Focus Points
+                    </h3>
+                    <ul style="margin: 0; padding-left: 24px; color: var(--on-surface-variant); line-height: 1.6;">
+                        <li><strong>100 Points:</strong> Completing a School or Work task.</li>
+                        <li><strong>50 Points:</strong> Completing a House chore, Personal Goal, or attending an Event.</li>
+                        <li><strong>Badges:</strong> Earn 500, 1000, and 2000 points in a single week to earn Bronze, Silver, and Gold badges!</li>
+                    </ul>
+                </div>
             </div>
         `;
     }
