@@ -1,0 +1,28 @@
+Google Play Store Listing Details - Focus Base
+=========================================================
+
+1. Short Description (Max 80 characters)
+---------------------------------------------------------
+Stay organized with neurodivergent-friendly routines and visual time awareness planner. 
+
+2. Long Description (Max 4000 characters)
+---------------------------------------------------------
+Focus Base is an ADHD-friendly, offline planner designed to support executive function, reduce time blindness, and make daily routines easier through clear visuals and distraction-free structure.
+
+Whether you're managing schoolwork, home responsibilities, or long-term goals, Focus Base organizes everything into clean, color-coded categories so you can focus on one task at a time. The entire app runs offline, keeping your data fully private and stored only on your device.
+
+**🌈 Accessible, Neurodivergent-Friendly Design**
+⭐ Key Features
+• 🎯 Dynamic Visual Urgency: Tasks intensify in color as deadlines approach, shifting from subtle cues to bold, high-contrast alerts 48 hours out—ideal for ADHD time blindness and visual learners.
+• 🔁 Routine Builder: Create daily or weekly routines with nested checklists that auto-reset at midnight to support consistent habit formation.
+• ⏰ Immersive Reminders: Pop-up reminders stay visible for 25 seconds and include optional sensory-friendly audio chimes to help you stay on track without being startled.
+• 🏆 Gamified Motivation: Earn points for completing tasks and unlock progression badges (Bronze, Silver, Gold) to reinforce positive routines.
+• 🧘 Focus Mode: A distraction-free overlay hides everything except your current task, helping reduce context switching and supporting sustained attention.
+• 🎨 Customizable Categories: Assign unique colors to School, Chores, Work, Goals, and more. The interface adapts instantly to your preferences.
+• 🗑️ Smart Archiving: Completed tasks clean themselves up after 7 days, and overdue items trigger a simple “Keep or Delete” prompt to prevent clutter and reduce decision fatigue.
+
+Focus Base helps you stay organized, build habits that stick, and maintain clarity throughout your day—designed with accessibility and neurodivergent needs in mind.
+
+3. Search Tags / Keywords
+---------------------------------------------------------
+ADHD, ADD, neurodivergent, planner, routine builder, habit tracker, time blindness, productivity, offline to-do list, focus mode, schedule, gamification, task manager, executive function, study planner, daily organizer, high-contrast UI, accessibility, ADHD planner.

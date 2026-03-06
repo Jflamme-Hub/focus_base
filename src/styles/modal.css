@@ -24,6 +24,8 @@
     background-color: var(--md-sys-color-surface);
     width: 90%;
     max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
     border-radius: 28px;
     padding: var(--spacing-xl);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
