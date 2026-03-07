@@ -61,6 +61,8 @@
         padding: 0 16px;
         flex-shrink: 0;
         justify-content: center;
+        /* Ensure touch target is adequate */
+        min-width: 48px;
     }
 
     #sidebar .nav-item .material-symbols-rounded {

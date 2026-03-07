@@ -95,8 +95,17 @@
 }
 
 @media (max-width: 768px) {
+    .calendar-container-wrapper {
+        /* If a wrapper exists, permit scrolling */
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 8px;
+    }
+
     .calendar-grid {
         gap: 4px;
+        /* Ensure it doesn't squish too much, allowing scroll instead */
+        min-width: 320px;
     }
 
     .weekday {
@@ -107,11 +116,13 @@
     .day {
         padding: 2px;
         border-radius: 4px;
+        min-height: 50px;
+        /* Give it enough height to be tapped */
     }
 
     .event-dot {
         width: 4px;
         height: 4px;
-        bottom: 4px;
+        bottom: 2px;
     }
 }
