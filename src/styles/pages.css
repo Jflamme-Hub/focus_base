@@ -73,6 +73,12 @@
     background-color: var(--md-sys-color-surface-variant);
 }
 
+.day.selected {
+    border-color: var(--md-sys-color-primary);
+    box-shadow: 0 0 0 2px var(--md-sys-color-primary) inset;
+    background-color: var(--md-sys-color-surface-variant);
+}
+
 .day.empty {
     background-color: transparent;
     border: none;

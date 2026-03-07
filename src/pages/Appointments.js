@@ -7,6 +7,11 @@ export default class Appointments {
         const now = new Date();
         this.displayDate = new Date(now.getFullYear(), now.getMonth(), 1);
 
+        // Track the actively selected day for new events
+        const monthStr = String(now.getMonth() + 1).padStart(2, '0');
+        const dayStr = String(now.getDate()).padStart(2, '0');
+        this.selectedDateStr = `${now.getFullYear()}-${monthStr}-${dayStr}`;
+
         this.render();
         this.unsubscribe = store.subscribe(() => this.render());
 
@@ -63,12 +68,19 @@ export default class Appointments {
 
         this.container.querySelector('#add-event-btn').addEventListener('click', () => {
             if (window.app && window.app.addModal) {
-                // Pass the 1st of the currently viewed month so the date picker opens to it
-                const vYear = this.displayDate.getFullYear();
-                const vMonth = String(this.displayDate.getMonth() + 1).padStart(2, '0');
-                const defaultDateStr = `${vYear}-${vMonth}-01`;
+                // If the user has explicitly selected a day, use it. Otherwise, use the 1st of the currently viewed month.
+                let targetDateStr;
+                if (this.selectedDateStr) {
+                    // Check if selected date naturally falls within the displayed month/year view?
+                    // Usually we just respect whatever they last clicked, or default strictly to the 1st if they changed months.
+                    targetDateStr = this.selectedDateStr;
+                } else {
+                    const vYear = this.displayDate.getFullYear();
+                    const vMonth = String(this.displayDate.getMonth() + 1).padStart(2, '0');
+                    targetDateStr = `${vYear}-${vMonth}-01`;
+                }
 
-                window.app.addModal.open('appointment', defaultDateStr);
+                window.app.addModal.open('appointment', targetDateStr);
             }
         });
 
@@ -86,6 +98,18 @@ export default class Appointments {
 
         this.container.querySelector('#cal-prev').addEventListener('click', () => this.changeMonth(-1));
         this.container.querySelector('#cal-next').addEventListener('click', () => this.changeMonth(1));
+
+        // Bind logic for selecting individual days
+        this.container.querySelectorAll('.day[data-date]').forEach(dayEl => {
+            dayEl.addEventListener('click', (e) => {
+                // Remove selected class from all
+                this.container.querySelectorAll('.day').forEach(d => d.classList.remove('selected'));
+                // Add to clicked
+                e.currentTarget.classList.add('selected');
+                // Store date
+                this.selectedDateStr = e.currentTarget.getAttribute('data-date');
+            });
+        });
     }
 
     async shareCalendar() {
@@ -236,7 +260,7 @@ export default class Appointments {
             const hasEvent = dayTasks.length > 0 || holiday;
 
             html += `
-                <div class="day ${hasEvent ? 'has-event' : ''}">
+                <div class="day ${hasEvent ? 'has-event' : ''} ${this.selectedDateStr === dayStr ? 'selected' : ''}" data-date="${dayStr}">
                     <span class="date-number">${i}</span>
                     <div class="day-events">
                         ${taskHtml}
