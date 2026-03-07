@@ -93,3 +93,25 @@
     left: 50%;
     transform: translateX(-50%);
 }
+
+@media (max-width: 768px) {
+    .calendar-grid {
+        gap: 4px;
+    }
+
+    .weekday {
+        padding: 4px;
+        font-size: 12px;
+    }
+
+    .day {
+        padding: 2px;
+        border-radius: 4px;
+    }
+
+    .event-dot {
+        width: 4px;
+        height: 4px;
+        bottom: 4px;
+    }
+}

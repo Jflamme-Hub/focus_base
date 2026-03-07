@@ -56,3 +56,14 @@
     text-decoration: line-through;
     filter: grayscale(0.5);
 }
+
+@media (max-width: 768px) {
+    .calendar-task {
+        font-size: 8px;
+        padding: 1px 2px;
+    }
+
+    .day-events {
+        max-height: 60px;
+    }
+}

@@ -113,3 +113,15 @@ textarea:focus {
     background: transparent;
     color: var(--md-sys-color-primary);
 }
+
+@media (max-width: 768px) {
+    .modal-card {
+        padding: var(--spacing-md);
+        width: 95%;
+        border-radius: 16px;
+    }
+
+    .type-selector {
+        flex-wrap: wrap;
+    }
+}

@@ -178,3 +178,21 @@
     background-color: rgba(179, 38, 30, 0.1);
     /* light error tint */
 }
+
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+
+    .task-column+.task-column {
+        border-left: none;
+        padding-left: 0;
+        border-top: 2px solid var(--md-sys-color-surface-variant);
+        padding-top: var(--spacing-md);
+    }
+
+    .welcome-section {
+        padding: var(--spacing-md);
+    }
+}
