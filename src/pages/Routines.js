@@ -19,7 +19,7 @@ export default class Routines {
             <div class="routines-page">
                 <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg);">
                     <p style="color: var(--md-sys-color-on-surface-variant); max-width: 600px; font-size: 16px; line-height: 1.5;">
-                        Build your morning, night, weekly, or daily routines here to help you stay structured. They will automatically reset every night at midnight to keep your progress fresh.
+                        Build your morning, night, weekly, or daily routines here. Follow your routines until they become habits.
                     </p>
                     <button id="add-routine-btn" class="btn btn-primary" style="display: flex; align-items: center; gap: 8px; padding: 12px 24px; font-size: 16px;">
                         <span class="material-symbols-rounded">add</span> New Routine

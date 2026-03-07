@@ -149,8 +149,8 @@ class App {
                     if (header) header.textContent = `Today's Focus`;
                     break;
                 case 'routines':
-                    module = await import('./pages/Routines.js?v=8');
-                    if (header) header.textContent = `Daily Routines`;
+                    module = await import('./pages/Routines.js?v=11');
+                    if (header) header.textContent = `Routines`;
                     break;
                 case 'school':
                     module = await import('./pages/SchoolWork.js?v=8');

@@ -46,7 +46,7 @@
 /* Calendar Grid */
 .calendar-grid {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(7, minmax(0, 1fr));
     gap: 8px;
 }
 
@@ -58,7 +58,8 @@
 }
 
 .day {
-    aspect-ratio: 1;
+    min-height: 80px;
+    /* Instead of hardcoding squares, ensure it's tall enough but can expand row-wise */
     background-color: var(--md-sys-color-surface);
     border: 1px solid var(--md-sys-color-outline);
     border-radius: 8px;
@@ -116,8 +117,8 @@
     .day {
         padding: 2px;
         border-radius: 4px;
-        min-height: 50px;
-        /* Give it enough height to be tapped */
+        min-height: 55px;
+        /* Give it enough height to be tapped, and it will expand if >2 events */
     }
 
     .event-dot {

@@ -117,14 +117,11 @@ export default class HelpModal {
                 </ul>
             `,
             'routines': `
-                <p>The <strong>Routines</strong> tab helps you build consistent habits and recurring tasks.</p>
-                <div style="background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); padding: 12px 16px; border-radius: 12px; margin-bottom: 12px; font-size: 0.95rem;">
-                    <strong>Why use this?</strong> Routines are essential as they provide necessary structure, reducing cognitive load, anxiety, and decision fatigue caused by executive dysfunction. By automating daily tasks, routines improve time management, boost focus, and foster consistency. They also help manage impulsivity and facilitate smoother transitions between activities.
-                </div>
+                <p>The <strong>Routines</strong> tab is for checklists that you want to reset automatically!</p>
                 <ul>
-                    <li>Routines are checklists that <strong>automatically reset</strong> based on a schedule you choose (e.g., daily, specific weekdays, or custom intervals like every 21 days).</li>
-                    <li>Perfect for morning wake-up routines, weekly chores, or recurring medication trackers.</li>
-                    <li>You don't need to manually recreate these tasks; just check things off, and the app resets them for you when the time comes.</li>
+                    <li>If you have chores, morning routines, or habits that you do over and over again, set them up here.</li>
+                    <li>You can choose how often they reset: every day, on specific days of the week, or after a certain number of days pass.</li>
+                    <li>Once you check everything off, you don't need to recreate the list. The app will automatically uncheck everything for you when the next due date arrives.</li>
                 </ul>
             `,
             'calendar': `

@@ -46,16 +46,18 @@ export default class Appointments {
                 </div>
             </div>
             
-            <div class="calendar-grid" id="calendar-capture-area" style="background: var(--surface); padding: 1rem; border-radius: 12px;">
-                <div class="weekday">Sun</div>
-                <div class="weekday">Mon</div>
-                <div class="weekday">Tue</div>
-                <div class="weekday">Wed</div>
-                <div class="weekday">Thu</div>
-                <div class="weekday">Fri</div>
-                <div class="weekday">Sat</div>
-                
-                ${this.generateDays()}
+            <div class="calendar-container-wrapper">
+                <div class="calendar-grid" id="calendar-capture-area" style="background: var(--surface); padding: 1rem; border-radius: 12px;">
+                    <div class="weekday">Sun</div>
+                    <div class="weekday">Mon</div>
+                    <div class="weekday">Tue</div>
+                    <div class="weekday">Wed</div>
+                    <div class="weekday">Thu</div>
+                    <div class="weekday">Fri</div>
+                    <div class="weekday">Sat</div>
+                    
+                    ${this.generateDays()}
+                </div>
             </div>
         `;
 
@@ -172,8 +174,27 @@ export default class Appointments {
         // Days in this month
         const daysInMonth = new Date(year, month + 1, 0).getDate();
 
+        // Calculate the date 7 days ago to hide old completed tasks
+        const oneWeekAgo = new Date();
+        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+        oneWeekAgo.setHours(0, 0, 0, 0);
+
         // Tasks with dates
-        const tasks = store.getTasks(t => t.time && t.time !== 'No Due Date');
+        const tasks = store.getTasks(t => {
+            if (!t.time || t.time === 'No Due Date') return false;
+
+            // If the task is completed, check how old it is
+            if (t.completed) {
+                const parts = t.time.split('-');
+                if (parts.length === 3) {
+                    const taskDate = new Date(parts[0], parts[1] - 1, parts[2]);
+                    if (taskDate < oneWeekAgo) {
+                        return false; // Hide if older than 7 days
+                    }
+                }
+            }
+            return true;
+        });
 
         // Holidays
         const holidays = this.getHolidays(month, year);
