@@ -11,9 +11,9 @@ export default class HouseWork {
     render() {
         this.container.innerHTML = `
             <div class="page-header" style="justify-content: flex-end;">
-                <button id="add-house-btn" class="btn btn-theme btn-theme-house" style="margin-top: 8px;">
+                <button id="add-house-btn" class="btn btn-theme btn-theme-house">
                     <span class="material-symbols-rounded">add</span>
-                    New Chore
+                    New Task
                 </button>
             </div>
 

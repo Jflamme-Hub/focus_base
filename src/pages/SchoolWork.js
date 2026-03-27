@@ -13,7 +13,7 @@ export default class SchoolWork {
             <div class="page-header" style="justify-content: flex-end;">
                 <button id="add-school-btn" class="btn btn-theme btn-theme-school">
                     <span class="material-symbols-rounded">add</span>
-                    New Assignment
+                    New Task
                 </button>
             </div>
             

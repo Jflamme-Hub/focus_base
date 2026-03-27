@@ -76,6 +76,14 @@ export default class AddModal {
                     </div>
 
                     <div class="modal-actions">
+                        <div style="flex: 1; display: flex; align-items: center; gap: 8px;">
+                            <button type="button" class="btn btn-icon complete-task-btn" style="display: none; color: var(--color-house); border: 1px solid var(--color-house);" title="Mark Complete">
+                                <span class="material-symbols-rounded">check</span>
+                            </button>
+                            <button type="button" class="btn btn-icon delete-task-btn" style="display: none; color: var(--md-sys-color-error, #B3261E); border: 1px solid var(--md-sys-color-error, #B3261E);" title="Delete Task Permanently">
+                                <span class="material-symbols-rounded">delete</span>
+                            </button>
+                        </div>
                         <button type="button" class="btn cancel-btn">Cancel</button>
                         <button type="submit" class="btn btn-primary" id="submit-btn">Create Task</button>
                     </div>
@@ -86,6 +94,21 @@ export default class AddModal {
         // Event Listeners
         div.querySelector('.close-modal').addEventListener('click', () => this.close());
         div.querySelector('.cancel-btn').addEventListener('click', () => this.close());
+        div.querySelector('.complete-task-btn').addEventListener('click', () => {
+            if (this.isEditing && this.editingId) {
+                store.toggleTask(this.editingId);
+                this.close();
+            }
+        });
+
+        div.querySelector('.delete-task-btn').addEventListener('click', () => {
+            if (this.isEditing && this.editingId) {
+                if (confirm("Permanently delete this task?")) {
+                    store.deleteTask(this.editingId);
+                    this.close();
+                }
+            }
+        });
 
         // Type Change Listener
         const typeInputs = div.querySelectorAll('input[name="type"]');
@@ -143,6 +166,8 @@ export default class AddModal {
         this.isEditing = false;
         this.overlay.querySelector('#modal-title').textContent = 'New Task';
         this.overlay.querySelector('#submit-btn').textContent = 'Create Task';
+        this.overlay.querySelector('.complete-task-btn').style.display = 'none';
+        this.overlay.querySelector('.delete-task-btn').style.display = 'none';
 
         const radio = this.overlay.querySelector(`input[value="${defaultType}"]`);
         if (radio) {
@@ -169,6 +194,8 @@ export default class AddModal {
         this.editingId = task.id;
         this.overlay.querySelector('#modal-title').textContent = 'Edit Task';
         this.overlay.querySelector('#submit-btn').textContent = 'Save Changes';
+        this.overlay.querySelector('.complete-task-btn').style.display = 'flex';
+        this.overlay.querySelector('.delete-task-btn').style.display = 'flex';
 
         // Pre-fill fields
         this.overlay.querySelector('#task-title').value = task.title;
@@ -217,6 +244,12 @@ export default class AddModal {
             if (time) {
                 finalTime += `T${time}`;
             }
+        } else {
+            // MISSING DATE PROMPT
+            // Only prompt if a user isn't actively clearing out the date field on purpose while editing,
+            // or if creating a brand new task.
+            const confirmedNoDate = window.confirm("You haven't set a Due Date for this task. It will be saved as 'No Due Date'. Proceed?");
+            if (!confirmedNoDate) return; // User cancelled to go back and add the date
         }
 
         const taskData = {

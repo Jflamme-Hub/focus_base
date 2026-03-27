@@ -1,0 +1,161 @@
+{
+  "id": "/",
+  "name": "Focus Base",
+  "short_name": "Focus Base",
+  "description": "An organization and routine-building app designed specifically for neurodivergent students to help stay focused, reduce overwhelm, and manage school work and daily habits with confidence. 100% offline with complete data privacy—your information never leaves your device.",
+  "start_url": "./index.html",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": [
+    "window-controls-overlay",
+    "tabbed",
+    "standalone"
+  ],
+  "background_color": "#ffffff",
+  "theme_color": "#6750A4",
+  "orientation": "portrait",
+  "categories": [
+    "productivity",
+    "education",
+    "lifestyle"
+  ],
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "./app_icon_192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./app_icon_192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./app_icon_512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./app_icon_512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "./screenshot_narrow.png",
+      "sizes": "375x812",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Focus Base Dashboard on Mobile"
+    },
+    {
+      "src": "./screenshot_wide.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Focus Base Dashboard on Desktop"
+    }
+  ],
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "shortcuts": [
+    {
+      "name": "Add New Task",
+      "short_name": "New Task",
+      "description": "Quickly add a new task",
+      "url": "/?action=add-task",
+      "icons": [
+        {
+          "src": "./app_icon_192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Start Focus Mode",
+      "short_name": "Focus Mode",
+      "description": "Start a new focus session",
+      "url": "/?action=focus-mode",
+      "icons": [
+        {
+          "src": "./app_icon_192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
+  "scope_extensions": [
+    {
+      "origin": "https://*.github.io"
+    }
+  ],
+  "file_handlers": [
+    {
+      "action": "/?action=open-file",
+      "accept": {
+        "text/plain": [
+          ".txt"
+        ]
+      }
+    }
+  ],
+  "protocol_handlers": [
+    {
+      "protocol": "web+focus",
+      "url": "/?action=%s"
+    }
+  ],
+  "widgets": [
+    {
+      "name": "Focus Base Quick Task",
+      "short_name": "Quick Task",
+      "description": "Add a task directly from your home screen.",
+      "tag": "task_widget",
+      "ms_ac_template": "",
+      "data": "",
+      "type": "application/json",
+      "screenshots": [
+        {
+          "src": "./app_icon_192.png",
+          "sizes": "192x192",
+          "label": "Quick Task Widget"
+        }
+      ],
+      "icons": [
+        {
+          "src": "./app_icon_192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  },
+  "note_taking": {
+    "new_note_url": "/?action=new-note"
+  },
+  "share_target": {
+    "action": "/?action=share",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
+}

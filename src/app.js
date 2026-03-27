@@ -3,8 +3,10 @@ import FocusMode from './components/FocusMode.js';
 import AddModal from './components/AddModal.js';
 import RoutineModal from './components/RoutineModal.js';
 import HelpModal from './components/HelpModal.js';
+import OccasionModal from './components/OccasionModal.js';
+import DeleteModal from './components/DeleteModal.js';
 import NotificationManager from './utils/NotificationManager.js';
-import { store } from './utils/Store.js?v=9';
+import { store } from './utils/Store.js';
 
 class App {
     constructor() {
@@ -13,7 +15,11 @@ class App {
         this.addModal = new AddModal();
         this.routineModal = new RoutineModal();
         this.helpModal = new HelpModal();
+        this.occasionModal = new OccasionModal();
+        this.deleteModal = new DeleteModal();
         this.notificationManager = new NotificationManager();
+
+        window.store = store; // Expose globally for sub-components (like DeleteModal) that operate outside standard contexts
 
         this.currentPageName = 'dashboard';
 
@@ -145,47 +151,47 @@ class App {
         try {
             switch (page) {
                 case 'dashboard':
-                    module = await import('./pages/Dashboard.js?v=8');
+                    module = await import('./pages/Dashboard.js');
                     if (header) header.textContent = `Today's Focus`;
                     break;
                 case 'routines':
-                    module = await import('./pages/Routines.js?v=11');
+                    module = await import('./pages/Routines.js');
                     if (header) header.textContent = `Routines`;
                     break;
                 case 'school':
-                    module = await import('./pages/SchoolWork.js?v=8');
+                    module = await import('./pages/SchoolWork.js');
                     if (header) header.textContent = `School Work`;
                     break;
                 case 'house':
-                    module = await import('./pages/HouseWork.js?v=8');
+                    module = await import('./pages/HouseWork.js');
                     if (header) header.textContent = `House Work`;
                     break;
                 case 'work':
-                    module = await import('./pages/Work.js?v=8');
+                    module = await import('./pages/Work.js');
                     if (header) header.textContent = `Work`;
                     break;
                 case 'calendar':
-                    module = await import('./pages/Appointments.js?v=8');
+                    module = await import('./pages/Appointments.js');
                     if (header) header.textContent = `Calendar`;
                     break;
                 case 'goals':
-                    module = await import('./pages/Goals.js?v=8');
+                    module = await import('./pages/Goals.js');
                     if (header) header.textContent = `Personal Goals`;
                     break;
                 case 'notes':
-                    module = await import('./pages/Notes.js?v=8');
+                    module = await import('./pages/Notes.js');
                     if (header) header.textContent = `Notes & Lists`;
                     break;
                 case 'journal':
-                    module = await import('./pages/Journal.js?v=8');
+                    module = await import('./pages/Journal.js');
                     if (header) header.textContent = `Journal`;
                     break;
                 case 'settings':
-                    module = await import('./pages/Settings.js?v=9');
+                    module = await import('./pages/Settings.js');
                     if (header) header.textContent = `Settings`;
                     break;
                 case 'review':
-                    module = await import('./pages/WeekReview.js?v=8');
+                    module = await import('./pages/WeekReview.js');
                     if (header) header.textContent = `Progress`;
                     break;
                 default:

@@ -99,15 +99,28 @@ export default class Appointments {
         this.container.querySelector('#cal-prev').addEventListener('click', () => this.changeMonth(-1));
         this.container.querySelector('#cal-next').addEventListener('click', () => this.changeMonth(1));
 
-        // Bind logic for selecting individual days
-        this.container.querySelectorAll('.day[data-date]').forEach(dayEl => {
+        // Attach click to days
+        const grid = this.container.querySelector('.calendar-grid');
+        grid.querySelectorAll('.day:not(.empty)').forEach(dayEl => {
             dayEl.addEventListener('click', (e) => {
-                // Remove selected class from all
-                this.container.querySelectorAll('.day').forEach(d => d.classList.remove('selected'));
+                // If the user clicked directly on a task block
+                const taskEl = e.target.closest('.calendar-task[data-id]');
+                if (taskEl) {
+                    e.stopPropagation();
+                    const taskId = taskEl.getAttribute('data-id');
+                    const task = store.state.tasks.find(t => t.id == taskId);
+                    if (task && window.app && window.app.addModal) {
+                        window.app.addModal.openForEdit(task);
+                    }
+                    return;
+                }
+
+                // Normal Day Selection (highlights the day, no list rendering needed)
+                grid.querySelectorAll('.day').forEach(d => d.classList.remove('selected'));
+                dayEl.classList.add('selected');
+
                 // Add to clicked
-                e.currentTarget.classList.add('selected');
-                // Store date
-                this.selectedDateStr = e.currentTarget.getAttribute('data-date');
+                this.selectedDateStr = dayEl.getAttribute('data-date');
             });
         });
     }
@@ -176,14 +189,129 @@ export default class Appointments {
     }
 
     getHolidays(month, year) {
+        const region = store.state.settings.region || 'US';
         const holidays = [];
-        // Simple fixed holidays logic (Month is 0-indexed)
-        if (month === 0 && 1) holidays.push({ day: 1, title: "New Year's Day" });
-        if (month === 1 && 14) holidays.push({ day: 14, title: "Valentine's Day" });
-        if (month === 2 && 17) holidays.push({ day: 17, title: "St. Patrick's Day" });
-        if (month === 9 && 31) holidays.push({ day: 31, title: "Halloween" });
-        if (month === 11 && 25) holidays.push({ day: 25, title: "Christmas" });
-        if (month === 6 && 4) holidays.push({ day: 4, title: "Independence Day" });
+
+        // --- Helper: Find the Nth specific day of a month ---
+        // Ex: getNthDayOfMonth(year, 10, 4, 4) -> 4th Thursday (4) of Nov (10)
+        const getNthDayOfMonth = (year, testMonth, dayOfWeek, n) => {
+            let count = 0;
+            for (let d = 1; d <= 31; d++) {
+                const date = new Date(year, testMonth, d);
+                if (date.getMonth() !== testMonth) break;
+                if (date.getDay() === dayOfWeek) {
+                    count++;
+                    if (count === n) return d;
+                }
+            }
+            return null;
+        };
+
+        // --- Helper: Find the Last specific day of a month ---
+        // Ex: getLastDayOfMonth(year, 4, 1) -> Last Monday (1) of May (4)
+        const getLastDayOfMonth = (year, testMonth, dayOfWeek) => {
+            // Start from last day of month and work backwards
+            const lastDate = new Date(year, testMonth + 1, 0).getDate();
+            for (let d = lastDate; d >= 1; d--) {
+                const date = new Date(year, testMonth, d);
+                if (date.getDay() === dayOfWeek) return d;
+            }
+            return null;
+        };
+
+        // --- Shared Holidays (US & CA) ---
+        if (region === 'US' || region === 'CA') {
+            if (month === 0) holidays.push({ day: 1, title: "New Year's Day" });
+            if (month === 1) holidays.push({ day: 14, title: "Valentine's Day" });
+            if (month === 2) holidays.push({ day: 17, title: "St. Patrick's Day" });
+            if (month === 9) holidays.push({ day: 31, title: "Halloween" });
+            if (month === 11) holidays.push({ day: 25, title: "Christmas" });
+
+            // Mother's Day (2nd Sunday in May)
+            if (month === 4) {
+                const mothersDay = getNthDayOfMonth(year, 4, 0, 2);
+                if (mothersDay) holidays.push({ day: mothersDay, title: "Mother's Day" });
+            }
+            // Father's Day (3rd Sunday in June)
+            if (month === 5) {
+                const fathersDay = getNthDayOfMonth(year, 5, 0, 3);
+                if (fathersDay) holidays.push({ day: fathersDay, title: "Father's Day" });
+            }
+        }
+
+        // --- US Specific Holidays ---
+        if (region === 'US') {
+            if (month === 6) holidays.push({ day: 4, title: "Independence Day" });
+            if (month === 10) holidays.push({ day: 11, title: "Veterans Day" });
+            if (month === 5) holidays.push({ day: 19, title: "Juneteenth" });
+
+            // MLK Day (3rd Monday in Jan)
+            if (month === 0) {
+                const mlk = getNthDayOfMonth(year, 0, 1, 3);
+                if (mlk) holidays.push({ day: mlk, title: "MLK Jr. Day" });
+            }
+            // Presidents Day (3rd Monday in Feb)
+            if (month === 1) {
+                const pres = getNthDayOfMonth(year, 1, 1, 3);
+                if (pres) holidays.push({ day: pres, title: "Presidents' Day" });
+            }
+            // Memorial Day (Last Monday in May)
+            if (month === 4) {
+                const memDay = getLastDayOfMonth(year, 4, 1);
+                if (memDay) holidays.push({ day: memDay, title: "Memorial Day" });
+            }
+            // Labor Day (1st Monday in Sept)
+            if (month === 8) {
+                const laborDay = getNthDayOfMonth(year, 8, 1, 1);
+                if (laborDay) holidays.push({ day: laborDay, title: "Labor Day" });
+            }
+            // Thanksgiving (4th Thursday in Nov)
+            if (month === 10) {
+                const tgiving = getNthDayOfMonth(year, 10, 4, 4);
+                if (tgiving) holidays.push({ day: tgiving, title: "Thanksgiving" });
+            }
+        }
+
+        // --- Canada Specific Holidays ---
+        if (region === 'CA') {
+            if (month === 6) holidays.push({ day: 1, title: "Canada Day" });
+            if (month === 10) holidays.push({ day: 11, title: "Remembrance Day" });
+            if (month === 11) holidays.push({ day: 26, title: "Boxing Day" });
+
+            // Victoria Day (Last Monday preceding May 25)
+            if (month === 4) {
+                for (let d = 24; d >= 18; d--) {
+                    if (new Date(year, 4, d).getDay() === 1) {
+                        holidays.push({ day: d, title: "Victoria Day" });
+                        break;
+                    }
+                }
+            }
+            // Canada Thanksgiving (2nd Monday in Oct)
+            if (month === 9) {
+                const tgiving = getNthDayOfMonth(year, 9, 1, 2);
+                if (tgiving) holidays.push({ day: tgiving, title: "Thanksgiving" });
+            }
+            // Labour Day (1st Monday in Sept)
+            if (month === 8) {
+                const labourDay = getNthDayOfMonth(year, 8, 1, 1);
+                if (labourDay) holidays.push({ day: labourDay, title: "Labour Day" });
+            }
+        }
+
+        // GB and AU can be added similarly with their algorithms
+        if (region === 'GB') {
+            // Simplified GB list
+            if (month === 11) holidays.push({ day: 25, title: "Christmas" }, { day: 26, title: "Boxing Day" });
+            if (month === 0) holidays.push({ day: 1, title: "New Year's Day" });
+        }
+
+        if (region === 'AU') {
+            // Simplified AU list
+            if (month === 0) holidays.push({ day: 26, title: "Australia Day" });
+            if (month === 3) holidays.push({ day: 25, title: "ANZAC Day" });
+            if (month === 11) holidays.push({ day: 25, title: "Christmas" }, { day: 26, title: "Boxing Day" });
+        }
 
         return holidays;
     }
@@ -207,6 +335,9 @@ export default class Appointments {
         const tasks = store.getTasks(t => {
             if (!t.time || t.time === 'No Due Date') return false;
 
+            // Hide automated occasion reminders from the calendar UI
+            if (t.isOccasionReminder) return false;
+
             // If the task is completed, check how old it is
             if (t.completed) {
                 const parts = t.time.split('-');
@@ -229,12 +360,14 @@ export default class Appointments {
         // Days
         for (let i = 1; i <= daysInMonth; i++) {
             // Check formatted date
-            const dayStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+            const monthDayStr = `-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+            const dayStr = `${year}${monthDayStr}`;
 
-            const dayTasks = tasks.filter(t => {
-                if (!t.time) return false;
-                return t.time.startsWith(dayStr);
-            });
+            const dayTasks = tasks.filter(t => t.time && t.time.startsWith(dayStr));
+
+            // Check Special Occasion
+            const occasions = store.state.settings.specialOccasions || [];
+            const dayOccasions = occasions.filter(o => o.date.slice(-5) === monthDayStr.substring(1)); // safely handle YYYY-MM-DD and MM-DD
 
             // Check holiday
             const holiday = holidays.find(h => h.day === i);
@@ -249,15 +382,25 @@ export default class Appointments {
                 `;
             }
 
+
+
+            dayOccasions.forEach(occ => {
+                taskHtml += `
+                    <div class="calendar-task type-annual" title="${occ.name}">
+                        ${occ.name}
+                    </div>
+                `;
+            });
+
             dayTasks.forEach(t => {
                 taskHtml += `
-                    <div class="calendar-task type-${t.type} ${t.completed ? 'completed' : ''}" title="${t.title}">
+                    <div class="calendar-task type-${t.type} ${t.completed ? 'completed' : ''}" title="${t.title}" data-id="${t.id}">
                         ${t.title}
                     </div>
                 `;
             });
 
-            const hasEvent = dayTasks.length > 0 || holiday;
+            const hasEvent = dayTasks.length > 0 || holiday || dayOccasions.length > 0;
 
             html += `
                 <div class="day ${hasEvent ? 'has-event' : ''} ${this.selectedDateStr === dayStr ? 'selected' : ''}" data-date="${dayStr}">

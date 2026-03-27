@@ -28,6 +28,10 @@
     --md-sys-color-on-surface-variant: #42474e;
     --md-sys-color-outline: #72777f;
 
+    /* Removed Categories Fallbacks */
+    --color-annual: #9C27B0;
+    --color-annual-text: #ffffff;
+
     /* Spacing & Layout */
     --spacing-xs: 4px;
     --spacing-sm: 8px;

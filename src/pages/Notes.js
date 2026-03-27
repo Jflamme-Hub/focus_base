@@ -1,4 +1,4 @@
-import { store } from '../utils/Store.js?v=9';
+import { store } from '../utils/Store.js';
 
 export default class Notes {
     constructor(container) {

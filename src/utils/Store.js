@@ -6,6 +6,7 @@ export default class Store {
         this.checkWeeklyReset();
         this.cleanOldTasks();
         this.checkRoutineResets();
+        this.generateOccasionReminders();
     }
 
     checkRoutineResets() {
@@ -144,7 +145,12 @@ export default class Store {
                 showHouse: true,
                 showWork: true,
                 showGoals: true,
-                showCalendar: true
+                showNotes: true,
+                showJournal: true,
+                showRoutines: true,
+                showCalendar: true,
+                region: 'US',
+                specialOccasions: []
             },
             journal: []
         };
@@ -163,10 +169,13 @@ export default class Store {
             if (!parsed.journal) parsed.journal = [];
 
             // Deep merge simply: ensure settings exist
+            const mergedSettings = { ...defaults.settings, ...(parsed.settings || {}) };
+            if (!mergedSettings.specialOccasions) mergedSettings.specialOccasions = [];
+
             return {
                 ...defaults,
                 ...parsed,
-                settings: { ...defaults.settings, ...(parsed.settings || {}) }
+                settings: mergedSettings
             };
         }
 
@@ -315,9 +324,20 @@ export default class Store {
         }
     }
 
-    getTasks(filterFn) {
-        if (!filterFn) return this.state.tasks;
-        return this.state.tasks.filter(filterFn);
+    getTasks(filterFn = null) {
+        let results = this.state.tasks;
+        if (filterFn) {
+            results = results.filter(filterFn);
+        }
+
+        // Global Chronological Sort (Ascending Date/Time)
+        results = [...results].sort((a, b) => {
+            const timeA = (a.time === 'No Due Date' || !a.time) ? '9999-12-31' : a.time;
+            const timeB = (b.time === 'No Due Date' || !b.time) ? '9999-12-31' : b.time;
+            return timeA.localeCompare(timeB);
+        });
+
+        return results;
     }
 
     getOverdueTasks() {
@@ -442,40 +462,123 @@ export default class Store {
         this.save();
     }
 
+    updateSettings(newSettings) {
+        this.state.settings = { ...this.state.settings, ...newSettings };
+        this.save();
+        this.generateOccasionReminders(); // Re-run generator when occasions change
+    }
+
     clearData() {
         this.state.tasks = [];
         this.state.routines = [];
+        this.state.notes = [];
         this.state.points = 0;
         this.state.streak = 0;
         this.state.weeklyPoints = 0;
         this.state.badges = { bronze: 0, silver: 0, gold: 0 };
         this.state.awardedThisWeek = { bronze: false, silver: false, gold: false };
-
-        // Wipe settings back to defaults entirely
-        const freshState = this.load();
-
-        // Because load() merges with what's in localStorage, 
-        // we need to explicitly inject the clean defaults it returns when localStorage is empty.
-        // We'll just hardcode the default wipe here for settings.
-        this.state.settings = {
-            username: 'Friend',
-            themeColor: '#6750A4',
-            colorSchool: '#1565C0',
-            colorHouse: '#006A60',
-            colorWork: '#FD7F2C',
-            colorEvent: '#B3261E',
-            colorGoal: '#1E88E5',
-            font: 'Roboto',
-            showSchool: true,
-            showHouse: true,
-            showWork: true,
-            showGoals: true,
-            showCalendar: true
-        };
-
-        this.state.notes = [];
         this.state.journal = [];
         this.save();
+    }
+
+    clearSpecificData(config) {
+        // Clear tasks by filtering out the selected types
+        this.state.tasks = this.state.tasks.filter(t => {
+            if (config.school && t.type === 'school') return false;
+            if (config.house && t.type === 'house') return false;
+            if (config.work && t.type === 'work') return false;
+            if (config.goals && t.type === 'goal') return false;
+
+            // Note: appointments/reminders are currently kept safe from bulk deletion here unless we explicitly add a toggle.
+            return true;
+        });
+
+        if (config.notes) {
+            this.state.notes = [];
+        }
+
+        if (config.journal) {
+            this.state.journal = [];
+        }
+
+        if (config.routines) {
+            this.state.routines = [];
+        }
+
+        if (config.points) {
+            this.state.points = 0;
+            this.state.streak = 0;
+            this.state.weeklyPoints = 0;
+            this.state.badges = { bronze: 0, silver: 0, gold: 0 };
+            this.state.awardedThisWeek = { bronze: false, silver: false, gold: false };
+        }
+
+        this.save();
+    }
+
+    // --- Special Occasions Reminder Engine ---
+    generateOccasionReminders() {
+        if (!this.state.settings || !this.state.settings.specialOccasions) return;
+
+        const currentYear = new Date().getFullYear();
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        // Flush all pending/incomplete automated reminders to prevent orphaned duplicates
+        // We check both the new flag AND the legacy notes field to wipe out any ghosts generated before the fix
+        this.state.tasks = this.state.tasks.filter(t => {
+            const isReminder = t.isOccasionReminder || t.notes === 'Automated reminder for an upcoming Special Occasion.';
+            return !(isReminder && !t.completed);
+        });
+
+        let tasksAdded = false;
+
+        this.state.settings.specialOccasions.forEach(occ => {
+            // occ.date might be "YYYY-MM-DD" from legacy data, ensuring we only grab "MM-DD"
+            const mmdd = occ.date.slice(-5);
+            const occasionDate = new Date(`${currentYear}-${mmdd}T12:00:00`);
+
+            // Define reminder intervals
+            const intervals = [
+                { days: 7, label: 'in 7 Days' },
+                { days: 3, label: 'in 3 Days' }
+            ];
+
+            intervals.forEach(inv => {
+                const reminderDate = new Date(occasionDate);
+                reminderDate.setDate(reminderDate.getDate() - inv.days);
+
+                // Only generate if the reminder date is exactly today or in the future
+                if (reminderDate >= today) {
+                    const reminderDateStr = reminderDate.toISOString().split('T')[0];
+                    const expectedTitle = `Reminder: ${occ.name} is ${inv.label}!`;
+
+                    // Check if this specific reminder task already exists (e.g., if completed)
+                    const exists = this.state.tasks.some(t =>
+                        t.title === expectedTitle &&
+                        t.time === reminderDateStr
+                    );
+
+                    if (!exists) {
+                        this.state.tasks.push({
+                            id: Date.now() + Math.random().toString(36).substring(2, 9), // safer unique ID
+                            title: expectedTitle,
+                            type: 'appointment',
+                            time: reminderDateStr,
+                            completed: false,
+                            created: Date.now(),
+                            isOccasionReminder: true,
+                            notes: `Automated reminder for an upcoming Special Occasion.`
+                        });
+                        tasksAdded = true;
+                    }
+                }
+            });
+        });
+
+        if (tasksAdded) {
+            this.save();
+        }
     }
 
 

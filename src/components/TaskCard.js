@@ -38,6 +38,9 @@ export default class TaskCard {
                 <button class="btn btn-icon edit-btn" title="Edit Task">
                     <span class="material-symbols-rounded">edit</span>
                 </button>
+                <button class="btn btn-icon delete-btn" title="Delete Task Permanently" style="color: var(--md-sys-color-error, #B3261E);">
+                    <span class="material-symbols-rounded">delete</span>
+                </button>
                 <button class="btn btn-icon check-btn" title="Complete Task">
                     <span class="material-symbols-rounded">check</span>
                 </button>
@@ -54,7 +57,12 @@ export default class TaskCard {
             this.toggleComplete();
         });
 
-
+        div.querySelector('.delete-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (confirm("Permanently delete this task?")) {
+                store.deleteTask(this.task.id);
+            }
+        });
 
         return div;
     }

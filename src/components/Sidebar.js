@@ -1,4 +1,4 @@
-import { store } from '../utils/Store.js?v=9';
+import { store } from '../utils/Store.js';
 
 export default class Sidebar {
     constructor(containerId) {
@@ -35,18 +35,21 @@ export default class Sidebar {
                 <span class="material-symbols-rounded">flag</span>
                 <span class="nav-label">Goals</span>
             </div>` : ''}
+            ${s.showNotes !== false ? `
             <div class="nav-item" data-page="notes" title="Notes & Lists">
                 <span class="material-symbols-rounded">edit_note</span>
                 <span class="nav-label">Notes</span>
-            </div>
+            </div>` : ''}
+            ${s.showJournal !== false ? `
             <div class="nav-item" data-page="journal" title="Journal">
                 <span class="material-symbols-rounded">book</span>
                 <span class="nav-label">Journal</span>
-            </div>
+            </div>` : ''}
+            ${s.showRoutines !== false ? `
             <div class="nav-item" data-page="routines" title="Daily Routines">
                 <span class="material-symbols-rounded">sync</span>
                 <span class="nav-label">Routines</span>
-            </div>
+            </div>` : ''}
             <div class="nav-item" data-page="calendar" title="Calendar">
                 <span class="material-symbols-rounded">calendar_month</span>
                 <span class="nav-label">Calendar</span>

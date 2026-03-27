@@ -39,9 +39,12 @@
     border: none;
     cursor: pointer;
     font-family: var(--font-family-base);
+    font-size: 14px;
     font-weight: 500;
     transition: background-color 0.2s;
     gap: 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .task-actions {
@@ -116,6 +119,11 @@
 .btn-theme-goal {
     --theme-color: var(--color-goal);
     --theme-color-text: var(--color-goal-text);
+}
+
+.btn-theme-annual {
+    --theme-color: var(--color-annual);
+    --theme-color-text: var(--color-annual-text);
 }
 
 .btn-icon {
